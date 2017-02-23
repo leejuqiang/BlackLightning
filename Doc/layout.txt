@@ -1,0 +1,278 @@
+interface ILayout
+	--The interface that can be treat as a layout dependence
+
+	Methods:
+	public abstract void initLayout ()
+	--Initialize the layout attached to this gameObject
+		return : --
+
+	public abstract UIRect getOriginFrame ()
+	--Get the frame rect in local space
+		return : --
+
+	public abstract UIRect getWorldFrame ()
+	--Get the frame rect in world space
+		return : --
+
+
+	Inherit Methods:
+
+
+class UIAnchor (base class: UnityEngine.MonoBehaviour)
+	--Change a component's position
+
+	Members:
+		public UnityEngine.MonoBehaviour m_dependLayout : --The layout dependence
+
+		public UnityEngine.Vector2 m_scale : --The position in the dependence in percent, between 0 and 1
+
+		public UnityEngine.Vector2 m_offset : --The offset in the dependence
+
+		public bool m_isChangeY : --Should change y of the position
+
+
+	Properties:
+		public UnityEngine.Transform Tran	(read only)
+		--The transform of this component
+
+
+	Constructors:
+
+	Methods:
+		public void reset ()
+		--This will make the component recompute the position next late update
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIAttach (base class: UnityEngine.MonoBehaviour)
+	--This will synchronize it's transform with another transform
+
+	Members:
+		public const int LOCAL_POS = 1 : --Synchronize local position
+
+		public const int POS = 2 : --Synchronize world position
+
+		public const int LOCAL_SCALE = 4 : --Synchronize local scale
+
+		public const int LOCAL_ROTATE = 16 : --Synchronize local rotation
+
+		public const int ROTATE = 32 : --Synchronize world rotation
+
+		public UnityEngine.Transform m_target : --The transform you want to synchronize with
+
+		public int m_flag : --This is the flag what you want to synchronize, see the constants
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class CustomLayoutNode (base class: System.Object)
+	--Node to save a transform information for custom layout
+
+	Members:
+		public UnityEngine.Vector3 m_scale : --The local scale
+
+		public UnityEngine.Vector3 m_pos : --The local position
+
+		public UnityEngine.Quaternion m_rot : --The local rotation
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UICustomLayout (base class: UnityEngine.MonoBehaviour)
+	--Save several gameObjects information, and you can restore them any time
+
+	Members:
+		public string m_name : --The id of the layout
+
+		public UnityEngine.GameObject[] m_gameObjects : --GameObjects controlled by it
+
+		public bool m_justActive : --Just control active state, won't change transfrom
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void photo ()
+		--Save the current state of the gameObjects
+			return : --
+
+		public void apply (string name)
+		--Restore all gameObjects to the states you saved them
+			string name : --The id of the layout you want to apply, if the id doesn't match, it will do nothing
+			return : --
+
+		public void apply ()
+		--Restore all gameObjects to the states you saved them
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIGrid (base class: UnityEngine.MonoBehaviour)
+	--A grid layout
+
+	Members:
+		public int m_row : --Row number of the grid
+
+		public int m_column : --Column number of the grid
+
+		public UnityEngine.Vector2 m_cellSize : --The size of each cell
+
+		public UnityEngine.Vector2 m_size : --The size of the grid
+
+		public bool m_adjustCellSize : --If true, when grid size changed, will resize the cells' size, otherwise, will change the row number and column number
+
+		public float m_cellZ : --The z of cells
+
+		public System.Collections.Generic.List<UnityEngine.Transform> m_children : --Transforms to be put at the center of the cells
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public System.Collections.Generic.List<T> createChildren<T> (UnityEngine.GameObject prefab, int count) where T : UnityEngine.MonoBehaviour
+		--Create a list of MonoBehaviours and put them in grid
+			UnityEngine.GameObject prefab : --The gameObject as a prefab to create other gameObjects, the MonoBehaviour must be attached to this gameObject
+			int count : --The count of list
+			return : --The list of MonoBehaviours
+
+		public void init ()
+		--Inintialize the grid
+			return : --
+
+		public void addAllChild ()
+		--Add all the children of it's transform to the grid
+			return : --
+
+		public void addChild (UnityEngine.Transform tran)
+		--Add a transform to the grid
+			UnityEngine.Transform tran : --The transform
+			return : --
+
+		public void append (UnityEngine.Transform tran)
+		--Add a transform to the end of the children list, this may not cause reposition
+			UnityEngine.Transform tran : --
+			return : --
+
+		public void reposition ()
+		--Recompute the position of all the transforms next update
+			return : --
+
+		public void repositionNow ()
+		--Reposition right now
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIScale (base class: UnityEngine.MonoBehaviour)
+	--Change the size of the component in the dependence
+
+	Members:
+		public UnityEngine.MonoBehaviour m_dependLayout : --The dependence
+
+		public UnityEngine.Vector2 m_scale : --The size of the component in percent
+
+		public UnityEngine.Vector2 m_offset : --The offset of the size
+
+		public bool m_isChangeY : --Should change scale y
+
+		public bool m_isLockAspect : --Should keep the aspect
+
+		public bool m_scaleCollider : --Also change the size of the BoxCollider on this gameObject
+
+		public int m_cameraIndex : --If dependence is null, the dependence will be the screen, and this is to appoint which camera's screen to use
+
+
+	Properties:
+		public UnityEngine.Vector2 RealSize	(read only)
+		--The size after resize
+
+		public UnityEngine.Transform Tran	(read only)
+		--The transform of this component
+
+
+	Constructors:
+
+	Methods:
+		public void reset ()
+		--Recompute the size next late update
+			return : --
+
+		public void init ()
+		--Initialize the layout
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIScreen (base class: UnityEngine.MonoBehaviour)
+	--Present a screen
+
+	Members:
+		public UnityEngine.Vector2 m_size : --This is the screen size, you can change it while not playing, while playing, this will be set to the real size of the screen
+
+		public int m_cameraIndex : --Which camera's screen you want to use
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+

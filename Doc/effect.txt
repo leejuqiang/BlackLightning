@@ -1,0 +1,367 @@
+class ShaderBase (base class: UnityEngine.MonoBehaviour)
+	--This is a base class to set values in shader
+
+	Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ShaderColor (base class: ShaderBase)
+	--Change a color in shader
+
+	Members:
+		public UnityEngine.Color m_color : --The color value
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+
+
+class ShaderOval (base class: ShaderBase)
+	--This is a 3d ellipsoid clip effect
+
+	Members:
+		public UnityEngine.Transform m_oval : --The center of the oval
+
+		private UnityEngine.Vector3 m_ovalR : --The raidus of the oval
+
+		public string m_rName : --The radius vector's name, the position vector's name is the m_name
+
+
+	Properties:
+		public UnityEngine.Vector3 OvalR	(read & write)
+		--The radius of the oval
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+
+
+class ShaderRect (base class: ShaderBase)
+	--This is a 3d cube clip effect
+
+	Members:
+		public UnityEngine.Transform m_min : --The left bottom front position of the cube
+
+		public UnityEngine.Transform m_max : --The right top back position of the cube
+
+		public string m_nameMax : --The vector name of the max, the min will use m_name
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+
+
+class ShaderScreenOval (base class: ShaderBase)
+	--This is a 2d oval clip effect, only pass one vector4, xy is position, zw is radius, and in clip space
+
+	Members:
+		public UnityEngine.Transform m_trans : --The center of the oval
+
+		private UnityEngine.Vector2 m_ovalR : --The radius of the oval
+
+		public UnityEngine.Camera m_camera : --The camera render the oval
+
+
+	Properties:
+		public UnityEngine.Vector2 OvalR	(read & write)
+		--The radius of the oval
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+
+
+class ShaderScreenRect (base class: ShaderBase)
+	--This is a 2d Rect clip effect, only pass one vector4, xy is left bottom, zw is right top, in clip space
+
+	Members:
+		public UnityEngine.Transform m_min : --The left bottom of the rect
+
+		public UnityEngine.Transform m_max : --The right top of the rect
+
+		public UnityEngine.Camera m_camera : --The camera render the rect
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+
+
+class ShaderSphere (base class: ShaderBase)
+	--This is a 3d sphere clip effect, this only pass one vector4, xyz is the postion, and w is the radius
+
+	Members:
+		public UnityEngine.Transform m_pos : --The center of the sphere
+
+		private float m_r : --The radius
+
+
+	Properties:
+		public float R	(read & write)
+		--The radius of the sphere
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+
+
+class ShaderTexture (base class: ShaderBase)
+	--Set a texture in shader
+
+	Members:
+		public UnityEngine.Texture m_texture : --The texture
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+
+
+class ShaderVector (base class: ShaderBase)
+	--Set a vector4 in shader
+
+	Members:
+		public UnityEngine.Vector4 m_vector : --The vecotr4
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_global : --If set global value of just for some materials
+
+		public bool m_static : --If true, the value will be only set once
+
+		public bool m_staticValue : --If true, some value won't be updated, depends on the child class
+
+		public string m_name : --The value's name in shader
+
+		public UnityEngine.Material[] m_mateirals : --The materials whose value will be changed
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setToShader ()
+		--Set the value to the shader
+			return : --
+
+		public virtual void setToValue ()
+		--Update the value
+			return : --
+
+
+

@@ -1,0 +1,264 @@
+class SoundData (base class: System.Object)
+	--Sound data
+
+	Members:
+		public string m_name : --The id of the data
+
+		public string m_file : --The path of the sound, if this is empty, then will use m_name as path
+
+		public bool m_isSfx : --Is sound effect
+
+		public bool m_fromBundle : --Is it load from bundle
+
+		public float m_volume : --The default volume of this sound
+
+		public int m_priority : --The priority of this sound
+
+		public bool m_cache : --Should cache this sound
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class SoundGroupData (base class: RandomGroupData)
+	--RandomGroupData for SoundGroup
+
+	Members:
+		public string m_name : --The is of the SoundData
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_weight : --Random weight
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class SoundGroup (base class: RandomGroup<SoundGroupData>)
+	--A RandomGroup to play sound randomly
+
+	Members:
+		public string m_name : --The id of the group
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public SoundGroupData[] m_datas : --The data list
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void init ()
+		--Init method, call this first
+			return : --
+
+		public virtual SoundGroupData randomOne (float w, out int index)
+		--Get the data of the weight
+			float w : --The weight
+			int& index : --The index of the data
+			return : --The data
+
+		public virtual SoundGroupData randomOne (out int index)
+		--Get one data randomly by weight
+			int& index : --The index of the data
+			return : --The data
+
+		public virtual SoundGroupData randomWithoutWeight (out int index)
+		--Get one data randomly ignore weight
+			int& index : --The index of the data
+			return : --The data
+
+
+
+class SoundDataDB (base class: DataDBBase<string, SoundData>)
+	--The DB class of SoundData
+
+	Members:
+		public string m_soundDir : --The sound path in Resource, when load a sound data, this path will be added before the path of data
+
+		public SoundGroup[] m_groups : --Sound groups for randomly play a sound
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public SoundGroup getGroup (string name)
+		--Get a SoundGroup by name
+			string name : --
+			return : --
+
+
+	Inherit Members:
+		public System.Collections.Generic.List<SoundData> m_datas : --The data list
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void init ()
+		--This method put data in a dictionary, you should call it once before you call getElement
+			return : --
+
+		public SoundData getElement (string key)
+		--Get a data by the key
+			string key : --The key of the data
+			return : --The data finded, or null if no such data
+
+
+
+class SoundManager (base class: UnityEngine.MonoBehaviour)
+	--Manager for play sound
+
+	Members:
+		public SoundDataDB m_sounds : --The sound datas
+
+		public string m_musicVolumSaveKey : --Key in PlayerPrefs for saving music volum
+
+		public string m_sfxVolumSaveKey : --Key in PlayerPrefs for saving sfx volum
+
+		public string m_musicFlagKey : --Key in PlayerPrefs for saving enable music
+
+		public string m_sfxFlagKey : --Key in PlayerPrefs for saving enable sfx
+
+		public int m_sfxChannelNumber : --The max number for sfx to play the same time
+
+		public int m_musicChannelNumber : --The max number for music to play the same time
+
+		public int m_priorityLevel : --How many levels you set in your sound datas, this number shouldn't be too large
+
+
+	Properties:
+		public string CurrentMusic	(read & write)
+		--The current playing music
+
+		public float MusicVolum	(read & write)
+		--The volum of music
+
+		public float SfxVolum	(read & write)
+		--The volum of sfx
+
+		public bool EnableMusic	(read & write)
+		--If enable music
+
+		public bool EnableSfx	(read & write)
+		--If enable sfx
+
+		public SoundManager Instance	(read only)
+		--The instance of the class
+
+
+	Constructors:
+
+	Methods:
+		public void changeMusicVolum (float v)
+		--Change the volum of music
+			float v : --The new volum
+			return : --
+
+		public void pauseMusic (string name = )
+		--Pasue the music by name
+			string name : --The name, if empty, will pause the first music in list
+			return : --
+
+		public void resumeMusic (string name = )
+		--Resume the music by name
+			string name : --The name, if empty, will resume the first music in list
+			return : --
+
+		public void stopMusic (string name = , float fadeOut = 0)
+		--Stop a music by name
+			string name : --The name, if empty, will stop the first music in list
+			float fadeOut : --The fade out time in seconds
+			return : --
+
+		public void stopAllMusic (float fadeOut = 0)
+		--Stop all the music
+			float fadeOut : --The fade out time in seconds
+			return : --
+
+		public void stopAllSfx ()
+		--Stop all the sfx
+			return : --
+
+		public void crossToMusic (string name, float fadeTime, bool loop = True)
+		--Stop current music and fade in to another music
+			string name : --The name of the new music
+			float fadeTime : --The fade in time in seconds
+			bool loop : --If play the new music cyclically
+			return : --
+
+		public void playRandom (string name, bool isSfx, bool isLoop = False, float fadeIn = 0, int priority = -1)
+		--Randomly play a sound from a sound group
+			string name : --The name of the sound group
+			bool isSfx : --If the sound is a sound effect
+			bool isLoop : --If play the sound cyclically
+			float fadeIn : --The fade in time in seconds
+			int priority : --The priority of the sound, if < 0, use the priority in the sound data
+			return : --
+
+		public bool hasPlaySfxId (int id)
+		--Is the sfx with the play id playing
+			int id : --The play id
+			return : --If the sfx is playing
+
+		public void stopSfxById (int id, float fadeOut = 0)
+		--Stop the sfx with the play id
+			int id : --The play id
+			float fadeOut : --The fade out in seconds
+			return : --
+
+		public void stopSfx (string name, float fadeOut = 0)
+		--Stop the sfx with the name
+			string name : --The name
+			float fadeOut : --The fade out in seconds
+			return : --
+
+		public int playSfx (string name, bool isLoop = False, float fadeIn = 0, int priority = -1)
+		--Play the sfx with the name
+			string name : --The name of the sfx
+			bool isLoop : --If play the sfx cyclically
+			float fadeIn : --The fade in in seconds
+			int priority : --The priority of the sound, if < 0, will use the priority in sound data
+			return : --The play id of the sound
+
+		public int playMusic (string name, bool isLoop, float fadeIn = 0)
+		--Play the music with the name
+			string name : --The name of the music
+			bool isLoop : --If play the music cyclically
+			float fadeIn : --The fade in in seconds
+			return : --The play id of the sound
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+

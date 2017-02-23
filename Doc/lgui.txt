@@ -1,0 +1,1918 @@
+class Device (base class: UnityEngine.MonoBehaviour)
+	--This class is used for plugins
+
+	Members:
+
+	Properties:
+		public string SystemCountry	(read only)
+		--The system setting country in android, other platforms return empty
+
+		public string SystemLang	(read only)
+		--Native System language
+
+		public double SystemClock	(read only)
+		--This is not working yet, just keep in mind that on some android devices, the Time.realtimeSinceStartup will pause while the device is sleeping
+
+		public int IconBadgeNumber	(read & write)
+		--The red number on the icon on iOS devices, other platforms will return 0
+
+
+	Constructors:
+
+	Methods:
+		public static string uuid ()
+		--Get a uuid
+			return : --The uuid created
+
+		public static void registerLocalNotification ()
+		--iOS register local notification
+			return : --
+
+		public static void openSmsPanel (string number)
+		--Open the sms ui of the phone
+			string number : --The phone number you want to send sms
+			return : --
+
+		public static void openDialPanel (string number)
+		--Open dial ui of the phone
+			string number : --The phone number you want to dial
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class DeviceCamera (base class: UnityEngine.MonoBehaviour)
+	--The class control camera
+
+	Members:
+		public bool m_useDelegate : --If set true, this gameObject will be set the delegate gameObject for iOS and android plugin
+
+		public DeleSetter m_pickCallback : --The delegate binder for m_callback
+
+		public System.Action<string> m_callback : --Callback when pick or shoot a picture, pass the path of the picture
+
+
+	Properties:
+		public DeviceCamera Instance	(read only)
+		--The instacne of the class
+
+
+	Constructors:
+
+	Methods:
+		public void show (string saveName, bool fromCamera)
+		--Show the camera or picture picker
+			string saveName : --The path where the picture will be stored
+			bool fromCamera : --Is it using camera or photo library
+			return : --
+
+		public byte[] getImageByte (string path, bool isPath, bool delete)
+		--Get the image byte data
+			string path : --The path of the image
+			bool isPath : --If false, the path will be added Application.persistentDataPath before it
+			bool delete : --If true, the image will be delete when return
+			return : --The byte array of this image or null if failed
+
+		public void deleteFile (string name, bool isFullPath)
+		--Delete the image of the name
+			string name : --The path of the image
+			bool isFullPath : --If false, the path will be added Application.persistentDataPath before it
+			return : --
+
+		public UnityEngine.Texture2D getImage (string path, bool isFullPath, bool delete)
+		--Get a Texture2D from the path
+			string path : --The path of the image
+			bool isFullPath : --If false, the path will be added Application.persistentDataPath before it
+			bool delete : --If true, the image will be delete when return
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class NotificationManager (base class: UnityEngine.MonoBehaviour)
+	--Notification manager
+
+	Members:
+		public bool m_clearWhenActive : --If true, cancel all notifications when app back to active
+
+		public bool m_useNotification : --If set true, will register the local notification on iOS
+
+		public string m_notificationKey : --The key in the PlayerPrefs to save the states of notifications
+
+
+	Properties:
+		public NotificationManager Instance	(read only)
+		--The instance of this class
+
+
+	Constructors:
+
+	Methods:
+		public string sendLocalNotification (System.DateTime date, string title, string message)
+		--Send a local notification
+			System.DateTime date : --The date of the the notification
+			string title : --The title of the notification
+			string message : --The message of the notification
+			return : --The id of the notification
+
+		public void cancelLocalNotification (string id)
+		--Cancel a notifications by id
+			string id : --The id of the notification
+			return : --
+
+		public string sendLocalNotification (float secondes, string title, string message)
+		--Send a local notification
+			float secondes : --
+			string title : --The title of the notification
+			string message : --The message of the notification
+			return : --The id of the notification
+
+		public void clearLocalNotification ()
+		--Clear and cancel all notifications
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+enum AnimControlParamType: --Mapping the types of the paramters in animator controller
+	intType = 0
+	boolType = 1
+	floatType = 2
+
+
+class AnimControlParam (base class: System.Object)
+	--A parameter used to change the paramaters in animator controllers
+
+	Members:
+		public string m_name : --The name of the parameter in the animator contorller
+
+		public AnimControlParamType m_type : --The type of the parameter
+
+		public float m_value : --The value of the parameter, if it's a bool, then value > 0 is true
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class AnimEventParam (base class: AnimControlParam)
+	--Change a parameter in animator controller when receive a animation event
+
+	Members:
+		public string m_event : --The event to trigger
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_name : --The name of the parameter in the animator contorller
+
+		public AnimControlParamType m_type : --The type of the parameter
+
+		public float m_value : --The value of the parameter, if it's a bool, then value > 0 is true
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class AnimEventTarget (base class: System.Object)
+	--The traget which animation events will be passed to
+
+	Members:
+		public UnityEngine.GameObject m_target : --The gameObject of the target
+
+		public string[] m_events : --Events the target is listening
+
+		public bool m_useSet : --If true, the events list will be put in a hashset to look up, this will make it faster if the events list is long
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void init ()
+		--Initialize the class
+			return : --
+
+		public bool isMatch (string id)
+		--If the event macth with the events list
+			string id : --The event
+			return : --True if it matchs
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class AnimEventPass (base class: UnityEngine.MonoBehaviour)
+	--Attach this to a animator and it will pass animation events to other gameObject
+
+	Members:
+		public AnimEventTarget[] m_targets : --The targets which events will be passed to
+
+		public AnimEventParam[] m_params : --Paramaters will be changed when received events
+
+		public UnityEngine.Animator m_animator : --The animator it's controlled
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class AnimStateEventPass (base class: UnityEngine.StateMachineBehaviour)
+	--Send animation events to the animator when enter or exit the state, should used with AnimEventPass
+
+	Members:
+		public string[] m_enterEvents : --Events sent when enter the state
+
+		public string[] m_exitEvents : --Events sent when exit the state
+
+		public AnimControlParam[] m_params : --Change the paramaters in animator controller when exit the state
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class AnimParam (base class: System.Object)
+	--Present a parameter in animator controller
+
+	Members:
+		public string m_name : --The name of the parameter
+
+		public AnimControlParamType m_type : --The type of the parameter
+
+		public UnityEngine.Vector2 m_numberRange : --The range of the value, it will be random from x to y
+
+		public bool m_resetToDefault : --If true, the parameter's value will be reset to default value the next frame after it changed
+
+		public float m_default : --The default value of the parameter to reset, if the value is bool, then m_default > 0 is true
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void random ()
+		--Random the value of the parameter
+			return : --
+
+		public int getDefaultInt ()
+		--Get the default int value
+			return : --The default value
+
+		public float getDefaultFloat ()
+		--Get the default float value
+			return : --The default value
+
+		public bool getDefaultBool ()
+		--Get the default bool value
+			return : --The default value
+
+		public int getIntValue ()
+		--Get the current int value of the parameter
+			return : --The current value
+
+		public float getFloatValue ()
+		--Get the current float value of the parameter
+			return : --The current value
+
+		public bool getBoolValue ()
+		--Get the current bool value of the parameter
+			return : --The current value
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class RandomAnim (base class: UnityEngine.MonoBehaviour)
+	--Change the parameters of an animator randomly
+
+	Members:
+		public AnimParam[] m_params : --The  parameters to be changed
+
+		public UnityEngine.Vector2 m_timeRange : --The time range between 2 random, after random once, next random time will be create between x and y randomly
+
+		public bool m_isRealTime : --Is the time affect by timescale
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void random ()
+		--Random once
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class RandomAnimSpeed (base class: UnityEngine.MonoBehaviour)
+	--Change animators or tweens' play speed randomly
+
+	Members:
+		public float m_baseSpeed : --The basic play speed, the final speed is basic speed + offset
+
+		public float m_offset : --The speed offset, will be between -m_offset to m_offset
+
+		public bool m_unitBaseSpeed : --If true, the basic speed will be m_baseSpeed, else will be the current speed of animators or tweens
+
+		public UnityEngine.Animator[] m_animators : --Animators to change speed
+
+		public UITween[] m_tweens : --Tweens to change speed
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void random ()
+		--Random speed once
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class EventInQueue (base class: PoolItem)
+	--The event in event queue
+
+	Members:
+		public string m_name : --Event name
+
+		public System.Object m_data : --Event Data
+
+		public bool m_isOneTime : --Is this event a one time event
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+		public int ReferenceCount	(read only)
+		--The refrence count, if is 0, zhen this item will be release
+
+
+	Inherbit Methods:
+		public virtual void clear ()
+		--Called when this item is about to put in pool
+			return : --
+
+		public virtual void init ()
+		--Called when this item is get from pool
+			return : --
+
+		public virtual void retain ()
+		--Add the reference count by 1
+			return : --
+
+		public virtual bool release ()
+		--Sub the reference count by 1, if reference count is 0, this will be reclaim by pool
+			return : --True if the reference count is 0
+
+
+
+class EventManager (base class: UnityEngine.MonoBehaviour)
+	--This is the manager of event system
+
+	Members:
+
+	Properties:
+		public EventManager Instance	(read only)
+		--The instance of this class
+
+
+	Constructors:
+
+	Methods:
+		public void blockBackKey ()
+		--This will black the android backkey event
+			return : --
+
+		public void restoreBlockBackKey ()
+		--This will restore the block state of android backkey event
+			return : --
+
+		public void registerTrigger (string name, EventTrigger t)
+		--Rigister to listen events with the name
+			string name : --The evnet name
+			EventTrigger t : --The listener
+			return : --
+
+		public void removeTrigger (string name)
+		--Cancel all listener of events with the name
+			string name : --The event name
+			return : --
+
+		public void removeTrigger (string name, EventTrigger t)
+		--Remove one listener of the event name
+			string name : --The event name
+			EventTrigger t : --The listener
+			return : --
+
+		public void broadcastEvent (string name, System.Object data)
+		--Broadcast a event with name and data to all listeners
+			string name : --The event name
+			System.Object data : --The data of the event
+			return : --
+
+		public void broadcastEvent (string name, System.Object data, float delay)
+		--Broadcast a event with name and data to all listeners with a delay in seconds
+			string name : --The event name
+			System.Object data : --The data of the event
+			float delay : --The delay time in seconds, real time
+			return : --
+
+		public void broadcastEvent (string name, System.Object data, float delay, bool useRealTime)
+		--Broadcast a event with name and data to all listeners with a delay in seconds
+			string name : --The event name
+			System.Object data : --The data of the event
+			float delay : --The delay time in seconds
+			bool useRealTime : --If use real time
+			return : --
+
+		public void sendEvent (string name, System.Object data, bool isOneTime = False)
+		--Send a event with name and data
+			string name : --The event name
+			System.Object data : --The data of the event
+			bool isOneTime : --If true, only the first listener who reponse this event can receive this event
+			return : --
+
+		public void sendEvent (string name, System.Object data, float delay, bool isOneTime = False)
+		--Send a event with name and data in a delay time
+			string name : --The event name
+			System.Object data : --The data of the event
+			float delay : --The delay time in seconds, real time
+			bool isOneTime : --If true, only the first listener who reponse this event can receive this event
+			return : --
+
+		public void sendEvent (string name, System.Object data, float delay, bool useRealTime, bool isOneTime = False)
+		--Send a event with name and data in a delay time
+			string name : --The event name
+			System.Object data : --The data of the event
+			float delay : --The delay time in seconds
+			bool useRealTime : --If use the real time
+			bool isOneTime : --If true, only the first listener who reponse this event can receive this event
+			return : --
+
+		public void cancelEvent (string name)
+		--Cancel a not sent event with name
+			string name : --The event name
+			return : --
+
+		public void cancelEvent (string name, bool isRealTime)
+		--Cancel a not sent event with name
+			string name : --The event name
+			bool isRealTime : --If the event is using real time
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class EventDes (base class: System.Object)
+	--The event listening rules
+
+	Members:
+		public string m_name : --Event name
+
+		public bool m_needActive : --Need the listener to be active to receive this event
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class BackKeyEvent (base class: System.Object)
+	--Rules to handle the android backkey event
+
+	Members:
+		public bool m_receiveBackKey : --If receive the back key event
+
+		public bool m_autoClosePanel : --If has a UIPanel, should close the panel
+
+		public bool m_autoCloseForward : --If auto close the panel, should close it forward
+
+		public string m_backToPanel : --When not empty, will automatically open the panel
+
+		public bool m_backPanelForward : --If back to a panel, should open it forward
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+interface IEventCallback
+	--The call back interface of an EventTrigger
+
+	Methods:
+	public abstract void onEvent (string name, System.Object data)
+	--Called when received an event
+		string name : --The name of the event
+		System.Object data : --The data of the event
+		return : --
+
+
+	Inherit Methods:
+
+
+class EventTrigger (base class: UnityEngine.MonoBehaviour)
+	--The listener of an event
+
+	Members:
+		public System.Collections.Generic.List<EventDes> m_eventList : --The events want to receive
+
+		public UnityEngine.MonoBehaviour m_script : --The script to notify when receive an event
+
+		public bool m_useSendMessage : --If true, will send a message to the script when receive an event, otherwise, the script must be an IEventCallback
+
+		public BackKeyEvent m_backKeyEvent : --How to hanlde the backkey event
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void removeCallback ()
+		--Clear the callback and the notify script
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class LGUI (base class: UnityEngine.MonoBehaviour)
+	--The main setting of the LGUI frame, must be exist all the time
+
+	Members:
+		public float m_dragThreshold : --When componet which can be clicked(like button) is used for draging(like in a list), this is the max offset to not trigger the release event
+
+		public bool m_fixSizeScreen : --If the display screen size won't change during runtime
+
+		public string m_timeUVName : --This is the vector name used in shader, which presents uv offset change with time circulatory, because _Time may case some "shaking" on some devices, set to empty if you don't need this function
+
+		public float[] m_timeCycles : --The cycles of time when uv offset change from 0 to 1, up to 4 values, mapping to xyzw of a Vector4, if less than 4, the default will be 0 all the time
+
+		public System.Action m_screenResize : --This is the callback called when screen size changed
+
+
+	Properties:
+		public LGUI Instance	(read & write)
+		--The instance of this class
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class abstract BaseObject (base class: UnityEngine.MonoBehaviour)
+	--This is a normal MonoBehaviour for inheriting, you can call Awake and Start any times but it only execute once, and when Time.timeScale is 0, the doUpdate and the doLateUpdate won't execute, so you won't worry about the deltaTime is 0
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		protected abstract void doUpdate ()
+		--The real Update you should override
+			return : --
+
+		protected abstract void doLateUpdate ()
+		--The real LateUpdate you should override
+			return : --
+
+		protected virtual void doStart ()
+		--The real Start you should override
+			return : --
+
+		protected virtual void doAwake ()
+		--The real Awake you should override
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class LMath (base class: System.Object)
+	--This class has some useful math methods
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public static UnityEngine.Vector3 lerpValue3 (UnityEngine.Vector3 f, UnityEngine.Vector3 to, UnityEngine.Vector3 value)
+		--Give the current value, and from value and to value, get the ratio, for vector3
+			UnityEngine.Vector3 f : --The from value
+			UnityEngine.Vector3 to : --The to value
+			UnityEngine.Vector3 value : --The current value
+			return : --The ratio from 0 to 1
+
+		public static UnityEngine.Vector2 lerpValue2 (UnityEngine.Vector2 f, UnityEngine.Vector2 to, UnityEngine.Vector2 value)
+		--Give the current value, and from value and to value, get the ratio, for vector2
+			UnityEngine.Vector2 f : --The from value
+			UnityEngine.Vector2 to : --The to value
+			UnityEngine.Vector2 value : --The current value
+			return : --The ratio from 0 to 1
+
+		public static UnityEngine.Vector4 lerpValue4 (UnityEngine.Vector4 f, UnityEngine.Vector4 to, UnityEngine.Vector4 value)
+		--Give the current value, and from value and to value, get the ratio, for vector4
+			UnityEngine.Vector4 f : --The from value
+			UnityEngine.Vector4 to : --The to value
+			UnityEngine.Vector4 value : --The current value
+			return : --The ratio from 0 to 1
+
+		public static float lerpValue (float f, float to, float value)
+		--Give the current value, and from value and to value, get the ratio, for float
+			float f : --The from value
+			float to : --The to value
+			float value : --The current value
+			return : --The ratio from 0 to 1
+
+		public static float floatMod (float first, float last)
+		--It's like the mode operator for float
+			float first : --The float dividend
+			float last : --The float divisor
+			return : --The remainder of the the 2 float
+
+		public static void lookAt (UnityEngine.Transform t, UnityEngine.Transform target, UnityEngine.Vector3 point, bool ignoreZ = True)
+		--Make a transform point at a point
+			UnityEngine.Transform t : --The transform to be rotated
+			UnityEngine.Transform target : --The transform t will point at
+			UnityEngine.Vector3 point : --The pointer of t in t's local space, means after rotation, the pointer in world space will point at target
+			bool ignoreZ : --Should the ignore the z value of the 2 position(like they're 2d object)
+			return : --
+
+		public static void lookAt (UnityEngine.Transform t, UnityEngine.Transform target, UnityEngine.Vector3 point, UnityEngine.Vector3 aix, bool ignoreZ = True)
+		--Make a transform point at a point
+			UnityEngine.Transform t : --The transform to be rotated
+			UnityEngine.Transform target : --The transform t will point at
+			UnityEngine.Vector3 point : --The pointer of t in t's local space, means after rotation, the pointer in world space will point at target
+			UnityEngine.Vector3 aix : --The rotate aix if the rotate angle is very nealy to 0 or 180
+			bool ignoreZ : --Should the ignore the z value of the 2 position(like they're 2d object)
+			return : --
+
+		public static void lookAt (UnityEngine.Transform t, UnityEngine.Vector3 target, UnityEngine.Vector3 point, bool ignoreZ = True)
+		--Make a transform point at a point
+			UnityEngine.Transform t : --The transform to be rotated
+			UnityEngine.Vector3 target : --The point in world space t will point at
+			UnityEngine.Vector3 point : --The pointer of t in t's local space, means after rotation, the pointer in world space will point at target
+			bool ignoreZ : --Should the ignore the z value of the 2 position(like they're 2d object)
+			return : --
+
+		public static void lookAt (UnityEngine.Transform t, UnityEngine.Vector3 target, UnityEngine.Vector3 point, UnityEngine.Vector3 aix, bool ignoreZ = True)
+		--Make a transform point at a point
+			UnityEngine.Transform t : --The transform to be rotated
+			UnityEngine.Vector3 target : --The point in world space t will point at
+			UnityEngine.Vector3 point : --The pointer of t in t's local space, means after rotation, the pointer in world space will point at target
+			UnityEngine.Vector3 aix : --The rotate aix if the rotate angle is very nealy to 0 or 180
+			bool ignoreZ : --Should the ignore the z value of the 2 position(like they're 2d object)
+			return : --
+
+		public static void lookAtDir (UnityEngine.Transform t, UnityEngine.Vector3 dir, UnityEngine.Vector3 point, bool ignoreZ = True)
+		--Make a transform point to a direction
+			UnityEngine.Transform t : --The transform to be rotated
+			UnityEngine.Vector3 dir : --The direction in world space t will point to
+			UnityEngine.Vector3 point : --The pointer of t in t's local space, means after rotation, the pointer in world space will point to dir
+			bool ignoreZ : --Should the ignore the z value of the position and dir(like they're 2d object)
+			return : --
+
+		public static void lookAtDir (UnityEngine.Transform t, UnityEngine.Vector3 dir, UnityEngine.Vector3 point, UnityEngine.Vector3 aix, bool ignoreZ = True)
+		--Make a transform point to a direction
+			UnityEngine.Transform t : --The transform to be rotated
+			UnityEngine.Vector3 dir : --The direction in world space t will point to
+			UnityEngine.Vector3 point : --The pointer of t in t's local space, means after rotation, the pointer in world space will point to dir
+			UnityEngine.Vector3 aix : --The rotate aix if the rotate angle is very nealy to 0 or 180
+			bool ignoreZ : --Should the ignore the z value of the position and dir(like they're 2d object)
+			return : --
+
+		public static UnityEngine.Quaternion rotateNormaledVector (UnityEngine.Vector3 f, UnityEngine.Vector3 to, float maxAng)
+		--Get a quaternion rotate from one vector to another limited by a max angle
+			UnityEngine.Vector3 f : --The from vector
+			UnityEngine.Vector3 to : --The to vector
+			float maxAng : --The max angle of this rotation
+			return : --The quaternion for this rotation
+
+		public static UnityEngine.Quaternion rotateNormaledVector (UnityEngine.Vector3 f, UnityEngine.Vector3 to, float maxAng, UnityEngine.Vector3 aix)
+		--Get a quaternion rotate from one vector to another limited by a max angle
+			UnityEngine.Vector3 f : --The from vector
+			UnityEngine.Vector3 to : --The to vector
+			float maxAng : --The max angle of this rotation
+			UnityEngine.Vector3 aix : --The rotate aix if the rotate angle is very nealy to 0 or 180
+			return : --The quaternion for this rotation
+
+		public static float loopValue (float smaller, float bigger, float v)
+		--Compute a float to make it between the small and the big value
+			float smaller : --The small value
+			float bigger : --The big value
+			float v : --The given float
+			return : --The value will be add or sub the integer times of (bigger - smaller) to make it between smaller and bigger
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class abstract PoolItem (base class: System.Object)
+	--Base class for class can be used in a pool
+
+	Members:
+
+	Properties:
+		public int ReferenceCount	(read only)
+		--The refrence count, if is 0, zhen this item will be release
+
+
+	Constructors:
+
+	Methods:
+		public abstract void init ()
+		--Called when this item is get from pool
+			return : --
+
+		public abstract void clear ()
+		--Called when this item is about to put in pool
+			return : --
+
+		public virtual void retain ()
+		--Add the reference count by 1
+			return : --
+
+		public virtual bool release ()
+		--Sub the reference count by 1, if reference count is 0, this will be reclaim by pool
+			return : --True if the reference count is 0
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class abstract PoolBase (base class: System.Object)
+	--Base class for pool
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class Pool<T> where T : new(), PoolItem (base class: PoolBase)
+	--A pool for items of type T
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class MonoPool (base class: System.Object)
+	--A memory pool for gameObject
+
+	Members:
+		public string m_id : --The id of the pool
+
+		public UnityEngine.GameObject m_prefab : --The prefab of this gameObject, it's can be a prefab or a gameObject in scene
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class PoolManager (base class: UnityEngine.MonoBehaviour)
+	--The manager for memory pool
+
+	Members:
+		public float m_destroyTime : --Max time for an unused pool item to exist
+
+		public MonoPool[] m_monoPools : --The gameObject pools
+
+
+	Properties:
+		public PoolManager Instance	(read only)
+		--The instance of the class
+
+
+	Constructors:
+
+	Methods:
+		public void addPool<T> (Pool<T> p, bool clearOld) where T : new(), PoolItem
+		--Add a memory pool for type T
+			Pool<T> p : --The new pool
+			bool clearOld : --If true and there is a pool for type T, the old pool will be cleared
+			return : --
+
+		public Pool<T> addPool<T> () where T : new(), PoolItem
+		--Add a memory pool for type T, if there isn't any pool for type T
+			return : --Return the pool added
+
+		public void addGameObjectPool (string id, UnityEngine.GameObject go)
+		--Add a gameObject memory pool if there isn't any pool for the id
+			string id : --The id of the pool
+			UnityEngine.GameObject go : --The prefab of the pool
+			return : --
+
+		public T createItem<T> () where T : new(), PoolItem
+		--Get an item of type T
+			return : --The item of type T
+
+		public UnityEngine.GameObject createGameObject (string id)
+		--Get a gameObject
+			string id : --The id of the gameObject pool
+			return : --The gameObject
+
+		public void freeGameObject (string id, UnityEngine.GameObject go)
+		--Release a gameObject, and put it back to pool
+			string id : --The id of the pool
+			UnityEngine.GameObject go : --The gameObject to be released
+			return : --
+
+		public void dryGameObjectPool (string id)
+		--Clear a gameObject pool
+			string id : --The id of the pool
+			return : --
+
+		public void dryPool<T> ()
+		--Clear a pool of type T
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class RandomGroupData (base class: System.Object)
+	--Data used for RandomGroup
+
+	Members:
+		public float m_weight : --Random weight
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class RandomGroup<T> where T : RandomGroupData (base class: System.Object)
+	--A group of RandomGroupData the used to randomly get one
+
+	Members:
+		public T[] m_datas : --The data list
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public virtual void init ()
+		--Init method, call this first
+			return : --
+
+		public virtual T randomOne (float w, out int index)
+		--Get the data of the weight
+			float w : --The weight
+			int& index : --The index of the data
+			return : --The data
+
+		public virtual T randomOne (out int index)
+		--Get one data randomly by weight
+			int& index : --The index of the data
+			return : --The data
+
+		public virtual T randomWithoutWeight (out int index)
+		--Get one data randomly ignore weight
+			int& index : --The index of the data
+			return : --The data
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class RandomQueue<T> (base class: System.Object)
+	--A queue of data to randomly get one or some
+
+	Members:
+
+	Properties:
+
+	Constructors:
+		public .... (System.Collections.Generic.IList<T> arr)
+		--Construct with an IList
+			System.Collections.Generic.IList<T> arr : --The IList
+
+
+	Methods:
+		public void shuffle ()
+		--Shuffle the queue randomly
+			return : --
+
+		public void addData (T d)
+		--Add a data to the queue
+			T d : --The data
+			return : --
+
+		public T[] popupRange (int num)
+		--Popup some datas, the order of datas int the queue will be changed
+			int num : --The number of datas you want to popup
+			return : --The array of datas, if num < the length of queue, this array won't contain duplicate datas
+
+		public T popup ()
+		--Popup one data
+			return : --The data
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UseFreePool<T> (base class: System.Object)
+	--This is a simple pool for type T which has 2 list, used list and free list
+
+	Members:
+
+	Properties:
+
+	Constructors:
+		public .... ()
+		--Default constructor
+
+		public .... (T[] arr)
+		--Construct with an array, this array will be added to free list
+			T[] arr : --The array
+
+		public .... (System.Collections.Generic.List<T> l)
+		--Construct with a List, this List will be added to free list
+			System.Collections.Generic.List<T> l : --The List
+
+		public .... (System.Collections.Generic.LinkedList<T> l)
+		--Construct with a LinkedList, this LinkedList will be added to free list
+			System.Collections.Generic.LinkedList<T> l : --The LinkedList
+
+
+	Methods:
+		public void addFree (T e)
+		--Add an item to free list
+			T e : --The item
+			return : --
+
+		public bool randomOne (ref T e)
+		--Get an item from free list randomly
+			T& e : --The item
+			return : --True if there is at least one item in free list
+
+		public bool getOne (ref T e)
+		--Get the first item of free list
+			T& e : --The item
+			return : --True if there is at least one item in free list
+
+		public void returnOne (T e)
+		--Remove the item from used list and put it back to free list
+			T e : --The item
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class BlankUpdate (base class: UnityEngine.MonoBehaviour)
+	--The heart beat function, it will call a callback every appointed seconds
+
+	Members:
+		public float m_updateTime : --The heart beat time
+
+		public bool m_realTime : --Is it use real time
+
+		public DeleSetter m_updateCallback : --Delegate binder for callback
+
+		public System.Action<float> m_callback : --The callback
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void reset ()
+		--Reset the timer
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class TimerLit (base class: System.Object)
+	--A lite timer, use scaled time
+
+	Members:
+		public float m_time : --The time
+
+
+	Properties:
+		public bool Enable	(read & write)
+		--Is this timer enable
+
+		public float CurrentTime	(read & write)
+		--Current time of the timer
+
+		public float LeftTime	(read only)
+		--The left time of the timer
+
+		public float Factor	(read only)
+		--The current time / the total time
+
+		public virtual bool IsFinish	(read only)
+		--Is this timer finished
+
+
+	Constructors:
+
+	Methods:
+		public virtual void reset (bool randomStart = False)
+		--Reset the timer
+			bool randomStart : --If true, the timer won't start from 0, it will start from a random point between 0 and the time
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class TimerLitReal (base class: TimerLit)
+	--A lite timer, use real time
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_time : --The time
+
+
+	Inherbit Properties:
+		public bool Enable	(read & write)
+		--Is this timer enable
+
+		public float CurrentTime	(read & write)
+		--Current time of the timer
+
+		public float LeftTime	(read only)
+		--The left time of the timer
+
+		public float Factor	(read only)
+		--The current time / the total time
+
+		public virtual bool IsFinish	(read only)
+		--Is this timer finished
+
+
+	Inherbit Methods:
+		public virtual void reset (bool randomStart = False)
+		--Reset the timer
+			bool randomStart : --If true, the timer won't start from 0, it will start from a random point between 0 and the time
+			return : --
+
+
+
+class TimerLitPingpong (base class: TimerLit)
+	--A lite timer, use scaled time, this time won't stop when time up, it will reverse the time count and keep counting
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_time : --The time
+
+
+	Inherbit Properties:
+		public bool Enable	(read & write)
+		--Is this timer enable
+
+		public float CurrentTime	(read & write)
+		--Current time of the timer
+
+		public float LeftTime	(read only)
+		--The left time of the timer
+
+		public float Factor	(read only)
+		--The current time / the total time
+
+
+	Inherbit Methods:
+		public virtual void reset (bool randomStart = False)
+		--Reset the timer
+			bool randomStart : --If true, the timer won't start from 0, it will start from a random point between 0 and the time
+			return : --
+
+
+
+class TimerLitRealPingpong (base class: TimerLitPingpong)
+	--A pingpong lite timer but use real time
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_time : --The time
+
+
+	Inherbit Properties:
+		public bool Enable	(read & write)
+		--Is this timer enable
+
+		public float CurrentTime	(read & write)
+		--Current time of the timer
+
+		public float LeftTime	(read only)
+		--The left time of the timer
+
+		public float Factor	(read only)
+		--The current time / the total time
+
+
+	Inherbit Methods:
+		public virtual void reset (bool randomStart = False)
+		--Reset the timer
+			bool randomStart : --If true, the timer won't start from 0, it will start from a random point between 0 and the time
+			return : --
+
+
+
+class TimerLitLoop (base class: TimerLit)
+	--A lite timer, use scaled time, this time won't stop when time up, it will start from 0 again
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_time : --The time
+
+
+	Inherbit Properties:
+		public bool Enable	(read & write)
+		--Is this timer enable
+
+		public float CurrentTime	(read & write)
+		--Current time of the timer
+
+		public float LeftTime	(read only)
+		--The left time of the timer
+
+		public float Factor	(read only)
+		--The current time / the total time
+
+
+	Inherbit Methods:
+		public virtual void reset (bool randomStart = False)
+		--Reset the timer
+			bool randomStart : --If true, the timer won't start from 0, it will start from a random point between 0 and the time
+			return : --
+
+
+
+class TimerLitRealLoop (base class: TimerLit)
+	--A loop lite timer but use real time
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_time : --The time
+
+
+	Inherbit Properties:
+		public bool Enable	(read & write)
+		--Is this timer enable
+
+		public float CurrentTime	(read & write)
+		--Current time of the timer
+
+		public float LeftTime	(read only)
+		--The left time of the timer
+
+		public float Factor	(read only)
+		--The current time / the total time
+
+
+	Inherbit Methods:
+		public virtual void reset (bool randomStart = False)
+		--Reset the timer
+			bool randomStart : --If true, the timer won't start from 0, it will start from a random point between 0 and the time
+			return : --
+
+
+
+class CheatBase (base class: UnityEngine.MonoBehaviour)
+	--The base class for a cheat ui, this ui used to add a cheat function, won't included in release build, unless define the macro FORCE_CHEAT
+
+	Members:
+		public int m_row : --The row to display on screen per page
+
+		public int m_column : --The column to display on screen per page
+
+		public float m_holdTime : --The time in seconds to press the left top corner of the screen to show to cheat ui
+
+		public UnityEngine.Vector2 m_holdArea : --The size of the area of the left top corner to press
+
+		public UnityEngine.Color m_defaultColor : --The gui color
+
+		public bool m_showFps : --If show fps at the left top of the screen
+
+		public bool m_stopTime : --If change timeScale to 0 when it shows
+
+		public bool m_logOnScreen : --If show the log on the screen
+
+		public int m_maxLogMsg : --If show the log, the max log number saved
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		protected virtual void onShowCheat ()
+		--Should override, called when the cheat ui showed
+			return : --
+
+		protected virtual void onHideCheat ()
+		--Should override, called when the cheat ui hided
+			return : --
+
+		protected void newLine ()
+		--Finish the current row and draw next at another row
+			return : --
+
+		protected virtual void drawPage (int page)
+		--Should override, the custom code to diaplay a page
+			int page : --The page index
+			return : --
+
+		protected bool button (string text)
+		--Draw a button
+			string text : --The text on the button
+			return : --If the button is clicked, return true
+
+		protected bool button (string text, UnityEngine.Color c)
+		--Draw a button
+			string text : --The text on the button
+			UnityEngine.Color c : --The color of the text
+			return : --If the button is clicked, return true
+
+		protected bool inputInt (ref int v, string buttonText = change)
+		--Draw a text input and a button for int, this takes 2 cells
+			int& v : --The int value
+			string buttonText : --The text on the button
+			return : --If the button is clicked, return true
+
+		protected bool inputInt (ref int v, UnityEngine.Color c, string buttonText = change)
+		--Draw a text input and a button for int, this takes 2 cells
+			int& v : --The int value
+			UnityEngine.Color c : --The color of the text
+			string buttonText : --The text on the button
+			return : --If the button is clicked, return true
+
+		protected bool inputString (ref string s, string buttonText = change)
+		--Draw a text input and a button for string, this takes 2 cells
+			string& s : --The string value
+			string buttonText : --The text on the button
+			return : --If the button is clicked, return true
+
+		protected bool inputString (ref string s, UnityEngine.Color c, string buttonText = change)
+		--Draw a text input and a button for string, this takes 2 cells
+			string& s : --The string value
+			UnityEngine.Color c : --The color of the text
+			string buttonText : --The text on the button
+			return : --If the button is clicked, return true
+
+		protected bool inputFloat (ref float v, string buttonText = change)
+		--Draw a text input and a button for float, this takes 2 cells
+			float& v : --The float value
+			string buttonText : --The text on the button
+			return : --If the button is clicked, return true
+
+		protected bool inputFloat (ref float v, UnityEngine.Color c, string buttonText = change)
+		--Draw a text input and a button for float, this takes 2 cells
+			float& v : --The float value
+			UnityEngine.Color c : --The color of the text
+			string buttonText : --The text on the button
+			return : --If the button is clicked, return true
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class Curve2DPoint (base class: System.Object)
+	--This is a 2d point in 2d curve
+
+	Members:
+		public UnityEngine.Vector2 m_point : --The position of the point
+
+		public UnityEngine.Vector2 m_left : --The left control point, not all curve use this
+
+		public UnityEngine.Vector2 m_right : --The right control point, not all curve use this
+
+		public bool m_visible : --Display this point in scene
+
+		public float m_weight : --The factor of this point in the curve
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class Curve2D (base class: UnityEngine.MonoBehaviour)
+	--A base class for 2d curve
+
+	Members:
+		public Curve2DPoint[] m_points : --The points of the curve
+
+		public bool m_showRectOne : --Draw a square with side length is 1 in scene
+
+		protected bool m_cache : --Cache an array of points for the curve or not, enable this to make evaluate faster
+
+
+	Properties:
+		public float TotalFactor	(read only)
+		--The total weight of all points
+
+
+	Constructors:
+
+	Methods:
+		public virtual int getCachePointCount ()
+		--The length of the cache array
+			return : --The length
+
+		public virtual UnityEngine.Vector2 getCachePoint (int index)
+		--Get a point from the cache array
+			int index : --The index of the point
+			return : --The point
+
+		public virtual void resetTrans ()
+		--This will clear scale and rotation of the transfrom, and make the position to 0, 0, 0, but the points won't change, so you can easily adjust the curve
+			return : --
+
+		public void computeWeight ()
+		--Recompute the weight
+			return : --
+
+		public virtual void distanceWeight (int times)
+		--Set weight by distance between 2 points
+			int times : --how many sub curves the curve was splited to
+			return : --
+
+		public void avargeWeight ()
+		--Set weights by avarge
+			return : --
+
+		public UnityEngine.Vector3 evaluateWorldPos (float f)
+		--Get the world position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+		public virtual UnityEngine.Vector2 evaluate (float f)
+		--Get the local position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class Curve2DBezier (base class: Curve2D)
+	--Present a 2d Bezier curve
+
+	Members:
+		protected int m_cacheNumber : --The length of the cache array
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public Curve2DPoint[] m_points : --The points of the curve
+
+		public bool m_showRectOne : --Draw a square with side length is 1 in scene
+
+		protected bool m_cache : --Cache an array of points for the curve or not, enable this to make evaluate faster
+
+
+	Inherbit Properties:
+		public float TotalFactor	(read only)
+		--The total weight of all points
+
+
+	Inherbit Methods:
+		public virtual int getCachePointCount ()
+		--The length of the cache array
+			return : --The length
+
+		public virtual UnityEngine.Vector2 getCachePoint (int index)
+		--Get a point from the cache array
+			int index : --The index of the point
+			return : --The point
+
+		public virtual void distanceWeight (int times)
+		--Set weight by distance between 2 points
+			int times : --how many sub curves the curve was splited to
+			return : --
+
+		public virtual void resetTrans ()
+		--This will clear scale and rotation of the transfrom, and make the position to 0, 0, 0, but the points won't change, so you can easily adjust the curve
+			return : --
+
+		public void computeWeight ()
+		--Recompute the weight
+			return : --
+
+		public void avargeWeight ()
+		--Set weights by avarge
+			return : --
+
+		public UnityEngine.Vector3 evaluateWorldPos (float f)
+		--Get the world position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+		public virtual UnityEngine.Vector2 evaluate (float f)
+		--Get the local position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+
+
+class Curve3DPoint (base class: System.Object)
+	--This is a 3d point in 3d curve
+
+	Members:
+		public UnityEngine.Vector3 m_point : --The position of the point
+
+		public UnityEngine.Vector3 m_left : --The left control point, not all curve use this
+
+		public UnityEngine.Vector3 m_right : --The right control point, not all curve use this
+
+		public bool m_visible : --Display this point in scene
+
+		public float m_weight : --The factor of this point in the curve
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class Curve3D (base class: UnityEngine.MonoBehaviour)
+	--A base class for 3d curve
+
+	Members:
+		public Curve3DPoint[] m_points : --The points of the curve
+
+		public bool m_showRectOne : --Draw a square with side length is 1 in scene
+
+		protected bool m_cache : --Cache an array of points for the curve or not, enable this to make evaluate faster
+
+
+	Properties:
+		public float TotalFactor	(read only)
+		--The total weight of all points
+
+
+	Constructors:
+
+	Methods:
+		public virtual int getCachePointCount ()
+		--The length of the cache array
+			return : --The length
+
+		public virtual UnityEngine.Vector3 getCachePoint (int index)
+		--Get a point from the cache array
+			int index : --The index of the point
+			return : --The point
+
+		public virtual void resetTrans ()
+		--This will clear scale and rotation of the transfrom, and make the position to 0, 0, 0, but the points won't change, so you can easily adjust the curve
+			return : --
+
+		public void computeWeight ()
+		--Recompute the weight
+			return : --
+
+		public virtual void distanceWeight (int times)
+		--Set weight by distance between 2 points
+			int times : --how many sub curves the curve was splited to
+			return : --
+
+		public void avargeWeight ()
+		--Set weights by avarge
+			return : --
+
+		public UnityEngine.Vector3 evaluateWorldPos (float f)
+		--Get the world position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+		public virtual UnityEngine.Vector3 evaluate (float f)
+		--Get the local position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class Curve3DBezier (base class: Curve3D)
+	--Present a 3d Bezier curve
+
+	Members:
+		protected int m_cacheNumber : --The length of the cache array
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public Curve3DPoint[] m_points : --The points of the curve
+
+		public bool m_showRectOne : --Draw a square with side length is 1 in scene
+
+		protected bool m_cache : --Cache an array of points for the curve or not, enable this to make evaluate faster
+
+
+	Inherbit Properties:
+		public float TotalFactor	(read only)
+		--The total weight of all points
+
+
+	Inherbit Methods:
+		public virtual int getCachePointCount ()
+		--The length of the cache array
+			return : --The length
+
+		public virtual UnityEngine.Vector3 getCachePoint (int index)
+		--Get a point from the cache array
+			int index : --The index of the point
+			return : --The point
+
+		public virtual void distanceWeight (int times)
+		--Set weight by distance between 2 points
+			int times : --how many sub curves the curve was splited to
+			return : --
+
+		public virtual void resetTrans ()
+		--This will clear scale and rotation of the transfrom, and make the position to 0, 0, 0, but the points won't change, so you can easily adjust the curve
+			return : --
+
+		public void computeWeight ()
+		--Recompute the weight
+			return : --
+
+		public void avargeWeight ()
+		--Set weights by avarge
+			return : --
+
+		public UnityEngine.Vector3 evaluateWorldPos (float f)
+		--Get the world position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+		public virtual UnityEngine.Vector3 evaluate (float f)
+		--Get the local position of a point in the curve
+			float f : --The factor of the point, between 0 and 1
+			return : --The point
+
+
+
+class ExpressVar (base class: System.Object)
+	--The variable used in ExpressText
+
+	Members:
+		public string m_name : --The name of the variable
+
+		public double m_value : --The value of the variable
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ExpressText (base class: UnityEngine.MonoBehaviour)
+	--This can compute the result of a string which is a math express
+
+	Members:
+		public System.Collections.Generic.List<ExpressVar> m_vars : --The list of variables
+
+		private string m_text : --The math express
+
+		public bool m_preProcessWhenAwake : --If true, the express will be preprocess when awake
+
+
+	Properties:
+		public string Text	(read & write)
+		--The math express
+
+
+	Constructors:
+
+	Methods:
+		public void setVar (string name, double value)
+		--Set the value of variable, if the varialbe does not exist, do nothing
+			string name : --The name of the variable
+			double value : --The value of the variable
+			return : --
+
+		public double getResult ()
+		--Get the result of the math express
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class abstract MiniJSON.Json (base class: System.Object)
+	--This is a third party source code, you can find the copyright in the source code file. I changed some code, so when you save a number with json, the type of the object won't be confused when you read it. Like if you save a int, then you read the object, you can cast it to int, to use this function, you need to pass the parameter "isFormatNumber" when deserialize and serialize
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class NotDestroy (base class: UnityEngine.MonoBehaviour)
+	--Attach this script to a gameObject to make this gameObject won't be destroyed when load another scene
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public static void destroyAll ()
+		--All awaked gameObject attached this script will be destroy
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+

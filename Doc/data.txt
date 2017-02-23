@@ -1,0 +1,1110 @@
+class DataDBBase<K, T> where T : IDataAble`1[K] (base class: UnityEngine.ScriptableObject)
+	--This is a dataDB base class, K is the data's id type, T is the data type
+
+	Members:
+		public System.Collections.Generic.List<T> m_datas : --The data list
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public T getElement (K key)
+		--Get a data by the key
+			K key : --The key of the data
+			return : --The data finded, or null if no such data
+
+		public virtual void init ()
+		--This method put data in a dictionary, you should call it once before you call getElement
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ExcelSplit (base class: System.Attribute)
+	--Attribue for importing data from excel, this can tell the data processor use which char to split a string into an array
+
+	Members:
+
+	Properties:
+		public System.Char SplitChar	(read only)
+		--The split char
+
+
+	Constructors:
+		public .... (System.Char ch)
+		--Construct with a given char
+			System.Char ch : --The given char
+
+		public .... ()
+		--Construct with ','
+
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ExcelSkip (base class: System.Attribute)
+	--Attribue for importing data from excel, this tell the processor to skip this field
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ExcelCombine (base class: System.Attribute)
+	--Attribue for importing data from excel, this tell the process to combine several cells into a string, not an array
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ExcelAssets (base class: System.Attribute)
+	--Attribue for importing data from excel, tell the process that in excel this is a path for an asset
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ExcelKeyValue (base class: System.Attribute)
+	--Attribue for importing data from excel, tell the process this is a key value pair split by the given char
+
+	Members:
+
+	Properties:
+		public System.Char DictChar	(read only)
+		--The split char
+
+
+	Constructors:
+		public .... (System.Char dict)
+		--Construct with a given char
+			System.Char dict : --The given char
+
+		public .... ()
+		--Construct with ':'
+
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ExcelDB (base class: System.Attribute)
+	--Attribue for importing data from excel, tell processor the type of the DB class, otherwise the type will be the sheet name + DB
+
+	Members:
+
+	Properties:
+		public System.Type DBType	(read only)
+		--The type of the DB class
+
+
+	Constructors:
+		public .... (System.Type t)
+		--Construct with a type
+			System.Type t : --The type of the DB class
+
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+interface IDataAble<T>
+	--The interface for a data, T is the type of the id of this data
+
+	Methods:
+	public abstract T getKey ()
+	--Get the id of the data
+		return : --The id of the data
+
+
+	Inherit Methods:
+
+
+enum SaveMergeType: --The type of operator when try to merge the same key from 2 save files
+	greater = 0
+	smaller = 1
+	longerOrOld = 2
+	longerOrNew = 3
+	shorterOrOld = 4
+	shorterOrNew = 5
+	newer = 6
+	older = 7
+	and = 8
+	or = 9
+	xor = 10
+	xnor = 11
+	custom = 12
+
+
+class SaveMerge (base class: System.Object)
+	--The merge rules for a key
+
+	Members:
+		public string m_key : --The key
+
+		public SaveMergeType m_type : --Merge Operator
+
+		public int m_order : --The smaller order will be merged first
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class JsonSaveFile (base class: UnityEngine.MonoBehaviour)
+	--This is a base class for saving data using json format
+
+	Members:
+		public SaveMerge[] m_merges : --The keys and rules when you try to merge 2 save files
+
+		public string m_saveFileName : --The path for the file to be saved, this path will be added LGUITool.SavePath before it
+
+		public string m_timeKey : --The key for time information. Time information will be used when you trying to merge save files
+
+		public int m_version : --The version of this save file. This is useful for upgrading your save file
+
+		public bool m_autoSave : --If true, the file will be saved when app become deactive
+
+		public bool m_autoBackup : --If true, the file will make a backup every time it's saved successfully
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void changed ()
+		--Mark the file has been changed, so next time, when you call save, it will acturally save
+			return : --
+
+		public virtual void merge (string json, int version)
+		--Try to merage a new json file with this file
+			string json : --The new json string
+			int version : --The verion of the other json file
+			return : --
+
+		protected virtual void finishMergeSave (System.Collections.Generic.Dictionary<string, System.Object> otherSave, System.Collections.Generic.Dictionary<string, System.Object> temp)
+		--Should override this, called when merge finished
+			System.Collections.Generic.Dictionary<string, System.Object> otherSave : --The other save file in dictionary
+			System.Collections.Generic.Dictionary<string, System.Object> temp : --The new dictionary after merged
+			return : --
+
+		protected virtual System.Object customMergeKey (string key, System.Object oldValue, System.Object newValue, System.Collections.Generic.Dictionary<string, System.Object> temp)
+		--Should override this, called when the key's merge type is custom
+			string key : --The key
+			System.Object oldValue : --The old value for this key
+			System.Object newValue : --The new value for this key
+			System.Collections.Generic.Dictionary<string, System.Object> temp : --The new dictionary after merged
+			return : --Should return the value you after merge
+
+		public virtual void initData (System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Should override this, the first time this save file was created, will call this to init the save data
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary to put your data
+			return : --
+
+		protected virtual string decode (byte[] b, int version)
+		--Decode the byte array to a json string when load it from disk
+			byte[] b : --The byte array
+			int version : --The version of the data to decode
+			return : --Should return the json string
+
+		protected virtual byte[] encode (string json)
+		--Encode the json string to a byte array when save it to disk
+			string json : --The json string
+			return : --Should return the byte array
+
+		public bool hasKey (string key, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Is the key in the give save dictionary
+			string key : --The key
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --
+
+		public bool hasKey (string key)
+		--Is the key in the save file
+			string key : --The key
+			return : --
+
+		public void delete (string key)
+		--Delete the key in the save file
+			string key : --The key
+			return : --
+
+		public void delete (string key, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Delete the key in the give save dictionary
+			string key : --The key
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --
+
+		public void clear ()
+		--Clear all data in the save file
+			return : --
+
+		public void setValue (string key, System.Object o, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Save a value of a key in the give save dictionary
+			string key : --The key
+			System.Object o : --The value
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --
+
+		public void setValue (string key, System.Object o)
+		--Save a value of a key in the save file
+			string key : --The key
+			System.Object o : --The value
+			return : --
+
+		public void setSafeInt (string key, SafeInt si)
+		--Save a SafeInt of a key in the save file
+			string key : --The key
+			SafeInt si : --The SafeInt
+			return : --
+
+		public void setSafeInt (string key, SafeInt si, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Save a SafeInt of a key in the give save dictionary
+			string key : --The key
+			SafeInt si : --The SafeInt
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --
+
+		public void setArray<T> (string key, T[] array)
+		--Save an array of a key in the save file
+			string key : --The key
+			T[] array : --The array of type T
+			return : --
+
+		public void setArray<T> (string key, T[] array, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Save an array of a key in the give save dictionary
+			string key : --The key
+			T[] array : --The array of type T
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --
+
+		public void setList<T> (string key, System.Collections.Generic.List<T> array)
+		--Save a List of a key in the save file
+			string key : --The key
+			System.Collections.Generic.List<T> array : --The List of type T
+			return : --
+
+		public void setList<T> (string key, System.Collections.Generic.List<T> array, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Save a List of a key in the give save dictionary
+			string key : --The key
+			System.Collections.Generic.List<T> array : --The List of type T
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --
+
+		public void loadSafeInt (string key, SafeInt si)
+		--Read a SafeInt of a key from the save file
+			string key : --The key
+			SafeInt si : --The SafeInt, this SafeInt will be changed
+			return : --
+
+		public void loadSafeInt (string key, SafeInt si, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Read a SafeInt of a key from the give save dictionary
+			string key : --The key
+			SafeInt si : --The SafeInt, this SafeInt will be changed
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --
+
+		public T getValue<T> (string key, T defaultValue = default(T))
+		--Get a value of a key from the save file
+			string key : --The key
+			T defaultValue : --If the key doesn't exist, this value will be returned
+			return : --The value of the key, or the defaultValue if the key doesn't exist
+
+		public T getValue<T> (string key, System.Collections.Generic.Dictionary<string, System.Object> dict, T defaultValue = default(T))
+		--Get a value of a key from the give save dictionary
+			string key : --The key
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			T defaultValue : --If the key doesn't exist, this value will be returned
+			return : --The value of the key, or the defaultValue if the key doesn't exist
+
+		public System.Collections.Generic.List<T> getListValue<T> (string key)
+		--Get a List of type T of a key from the save file
+			string key : --The key
+			return : --The List of the key, or an empty List if the key doesn't exist
+
+		public System.Collections.Generic.List<T> getListValue<T> (string key, System.Collections.Generic.Dictionary<string, System.Object> dict)
+		--Get a List of type T of a key from the give save dictionary
+			string key : --The key
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The dictionary of the save data
+			return : --The List of the key, or an empty List if the key doesn't exist
+
+		protected virtual void preSave ()
+		--Should be overrided, called when the file about to be saved
+			return : --
+
+		protected virtual void afterLoad ()
+		--Should be overrided, called when the file is loaded
+			return : --
+
+		public virtual void changedAndSave ()
+		--Mark the file is changed and save
+			return : --
+
+		public virtual void save ()
+		--Save the file to disk, if the file is unchanged, this will do nothing
+			return : --
+
+		public virtual System.Collections.Generic.Dictionary<string, System.Object> loadFromJson (string json, int v)
+		--Load a json string, the string must be a json dictionary
+			string json : --The json string to be loaded
+			int v : --The version of the data
+			return : --The dictionary of the json string
+
+		public virtual void load ()
+		--Load the save data from disk
+			return : --
+
+		protected virtual void updateSave (System.Collections.Generic.Dictionary<string, System.Object> dict, int old, int newVersion)
+		--Should be overrided, called when the data version is not match from the data version loaded
+			System.Collections.Generic.Dictionary<string, System.Object> dict : --The save dictionary
+			int old : --The version of the dictionary
+			int newVersion : --The new version to upgrade to
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class LKeyValue<K, V> (base class: System.Object)
+	--It's a key value pair can be serialized, K is the key's type, V is the value's type
+
+	Members:
+		public K m_key : --The key
+
+		public V m_value : --The value
+
+
+	Properties:
+
+	Constructors:
+		public .... (K key, V value)
+		--Construct with key and value
+			K key : --The key
+			V value : --The value
+
+
+	Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+		public static System.Collections.Generic.Dictionary<K, V> toDict (System.Collections.Generic.IEnumerable<LKeyValue<K, V>> array)
+		--Change a list of key value pair to a dictionary
+			System.Collections.Generic.IEnumerable<LKeyValue<K, V>> array : --The list of key value pair
+			return : --The dictionary
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class KeyValueSI (base class: LKeyValue<string, int>)
+	--String key and int value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_key : --The key
+
+		public int m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueSS (base class: LKeyValue<string, string>)
+	--String key and string value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_key : --The key
+
+		public string m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueSF (base class: LKeyValue<string, float>)
+	--String key and float value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_key : --The key
+
+		public float m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueSD (base class: LKeyValue<string, double>)
+	--String key and double value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_key : --The key
+
+		public double m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueID (base class: LKeyValue<int, double>)
+	--int key and double value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public int m_key : --The key
+
+		public double m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueII (base class: LKeyValue<int, int>)
+	--int key and int value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public int m_key : --The key
+
+		public int m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueIS (base class: LKeyValue<int, string>)
+	--int key and string value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public int m_key : --The key
+
+		public string m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueIF (base class: LKeyValue<int, float>)
+	--int key and float value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public int m_key : --The key
+
+		public float m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueFF (base class: LKeyValue<float, float>)
+	--float key and float value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_key : --The key
+
+		public float m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueFS (base class: LKeyValue<float, string>)
+	--float key and string value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_key : --The key
+
+		public string m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueFI (base class: LKeyValue<float, int>)
+	--float key and int value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_key : --The key
+
+		public int m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueFD (base class: LKeyValue<float, double>)
+	--float key and double value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_key : --The key
+
+		public double m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueDF (base class: LKeyValue<double, float>)
+	--double key and float value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public double m_key : --The key
+
+		public float m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueDS (base class: LKeyValue<double, string>)
+	--double key and string value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public double m_key : --The key
+
+		public string m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueDI (base class: LKeyValue<double, int>)
+	--double key and int value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public double m_key : --The key
+
+		public int m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class KeyValueDD (base class: LKeyValue<double, double>)
+	--double key and double value pair
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public double m_key : --The key
+
+		public double m_value : --The value
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+		public virtual void setKeyValue (System.Object key, System.Object value)
+		--Set key and value
+			System.Object key : --The key
+			System.Object value : --The value
+			return : --
+
+
+
+class LangData (base class: System.Object)
+	--Meta data for language
+
+	Members:
+		public string m_id : --The string id
+
+		public string m_text : --The string content
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class LangDataDB (base class: UnityEngine.ScriptableObject)
+	--The DB class for language
+
+	Members:
+		public UnityEngine.SystemLanguage m_lang : --Language of this data
+
+		public bool m_wrapByWord : --Is this language can wrap by word
+
+		public UnityEngine.SystemLanguage[] m_matchLangs : --This language data will be used when any language in the array matched
+
+		public LangData[] m_datas : --The string datas
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void unload ()
+		--Unload the language
+			return : --
+
+		public void init ()
+		--Init the language
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class FontLangMap (base class: System.Object)
+	--Maping a UIFont to a language
+
+	Members:
+		public UnityEngine.SystemLanguage m_lang : --The language
+
+		public UIFont m_font : --The UIFont
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class FontResource (base class: System.Object)
+	--Used to change font in different languages
+
+	Members:
+		public string m_name : --The id of this resource
+
+		public FontLangMap[] m_fonts : --Different fonts in different languages
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class LangManager (base class: UnityEngine.MonoBehaviour)
+	--This class manage the localizion text
+
+	Members:
+		public UnityEngine.SystemLanguage m_defaultLanguage : --Default language
+
+		public bool m_useSystemLanguage : --If true, will use the system's language, otherwise will use default language
+
+		public LangDataDB[] m_langs : --All the language datas
+
+		public FontResource[] m_fonts : --All the different font resources
+
+		public string m_settingLangKey : --The key in PlayerPrefs to save the user custom language, if the user sets a custom language, the manager won't use system language nor default language
+
+
+	Properties:
+		public LangManager Instance	(read only)
+		--The instance of this class
+
+		public bool HasAssignLang	(read only)
+		--If the user has set a custom Language
+
+		public UnityEngine.SystemLanguage SettingLang	(read & write)
+		--The user setting language
+
+		public UnityEngine.SystemLanguage CurrentLanguage	(read only)
+		--Current language
+
+		public bool WrapByWord	(read only)
+		--Is current language can wrap by word
+
+
+	Constructors:
+
+	Methods:
+		public bool changeLanguage (UnityEngine.SystemLanguage lang)
+		--Change the current language
+			UnityEngine.SystemLanguage lang : --The new language
+			return : --True if the language is changed
+
+		public UIFont getFont (string name, UIFont defaultFont)
+		--Get a UIFont by the given id base on the current language
+			string name : --The id of the font resource
+			UIFont defaultFont : --The default font if the id is not exist
+			return : --The font finded
+
+		public string getString (string id)
+		--Get the localized text of a text id
+			string id : --The text id
+			return : --The localied text
+
+		public void addString (string id, string text, UnityEngine.SystemLanguage language)
+		--Add a localized text of a text id to a language, this text won't be save in disk, so you need to add it every time the app launched
+			string id : --The text id
+			string text : --The localized text
+			UnityEngine.SystemLanguage language : --The language you want to add the text
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class StringDataAbleBase (base class: System.Object)
+	--It's a base data class for using string as a key, just to make life easier
+
+	Members:
+		public string m_id : --The id of the data
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public virtual string getKey ()
+		--Implement the IDataAble, get the id
+			return : --The id
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+

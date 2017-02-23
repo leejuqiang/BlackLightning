@@ -1,0 +1,185 @@
+enum NetType: --Message send type, if use local, you need to put the response data in the message, because the recevie message will be the send message
+	webService = 0
+	tcp = 1
+	local = 2
+
+
+class NWMessage (base class: System.Object)
+	--Base data structure for message, your custom message must inherit this class
+
+	Members:
+
+	Properties:
+		public bool IsCache	(read & write)
+		--Is this message recevie from server or cache
+
+		public string Error	(read & write)
+		--The error message, if no error, this will be empty
+
+		public string CacheID	(read & write)
+		--The id used to cache
+
+		public float DelayTime	(read & write)
+		--The delay of this message
+
+		public int ID	(read & write)
+		--A unique int id of the message
+
+		public string MessageID	(read & write)
+		--The message id, this is usually present a kind of operation
+
+		public System.Collections.Generic.Dictionary<string, System.Object> Data	(read only)
+		--The data in this message
+
+		public NetType Protocol	(read & write)
+		--The send type of this message
+
+
+	Constructors:
+		public .... ()
+		--Default constructor
+
+		public .... (string messageId)
+		--Construct with message id
+			string messageId : --Message id
+
+
+	Methods:
+		public virtual NWMessage init (string messageId)
+		--The init method of a message
+			string messageId : --Message id
+			return : --
+
+		public virtual void clear ()
+		--Clear all data and error
+			return : --
+
+		public virtual void copyBaseTo (NWMessage msg)
+		--Copy this message to a new message
+			NWMessage msg : --The new message
+			return : --
+
+		public virtual System.Object getParma (string key)
+		--Get data with key
+			string key : --The key
+			return : --The value for this key, null if key doesn't exist
+
+		public virtual void addParma (string key, System.Object obj)
+		--Add a data with key
+			string key : --The key
+			System.Object obj : --The data
+			return : --
+
+		public virtual byte[] toBin ()
+		--Change the data to a byte array, used when sent by tcp
+			return : --The byte array
+
+		public void fromBin (byte[] bin)
+		--Change a byte array to the data dictionary
+			byte[] bin : --The byte array
+			return : --
+
+		public virtual void fromBin (byte[] bin, int index, int len)
+		--Change a byte array to the data dictionary
+			byte[] bin : --The byte array
+			int index : --The start index of the byte array
+			int len : --The length to read for the byte array
+			return : --
+
+		public virtual void preHandle ()
+		--Called before send the message
+			return : --
+
+		public virtual void postHandle ()
+		--Called after receive the message
+			return : --
+
+		public virtual void customErrorCheck ()
+		--Add check error function in this method
+			return : --
+
+		public virtual void sendByWWW (UnityEngine.WWWForm form)
+		--Change data to a WWWForm, used when sent by webService
+			UnityEngine.WWWForm form : --The WWWForm
+			return : --
+
+		public virtual void receiveByWWW (UnityEngine.WWW www)
+		--Get the data from a WWW response, used when received by webService
+			UnityEngine.WWW www : --
+			return : --
+
+		public void log ()
+		--Log the content of the data
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class NetManager (base class: UnityEngine.MonoBehaviour)
+	--Manager of network
+
+	Members:
+		public string m_url : --Http server url
+
+		public float m_timeout : --Network time out
+
+		public float m_localDelayTime : --The delay time when send message using local type
+
+		public string m_timeoutError : --Error message for time out
+
+		public string m_unknownError : --Error message for unknown
+
+		public string m_noNetworkError : --Error message for no network
+
+
+	Properties:
+		public NetManager Instance	(read only)
+		--The instance of the class
+
+
+	Constructors:
+
+	Methods:
+		public bool isMessageCached (string id)
+		--If the message has been cached
+			string id : --The id of the message
+			return : --
+
+		public void sendOrGetCache (NWMessage msg, float cacheTime)
+		--Send a message or use the response from cache
+			NWMessage msg : --The message
+			float cacheTime : --The time this message should be cached, the cache for this message will be clear after this time
+			return : --
+
+		public void removeCache (string id)
+		--Clear the cache for a message
+			string id : --The id of the message
+			return : --
+
+		public void send (NWMessage msg)
+		--Send a message, when receive the response of this message, will send an event using EventManager, the name of the event will be "on_" + message id or message id + "_error" if failed
+			NWMessage msg : --The message
+			return : --
+
+		public NWMessage getLastMessage ()
+		--Get the last message in message queue
+			return : --The last message
+
+		public void sendImmediately (NWMessage msg)
+		--Send the message without put it in queue
+			NWMessage msg : --The message
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+

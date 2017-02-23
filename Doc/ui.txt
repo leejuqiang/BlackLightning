@@ -1,0 +1,2544 @@
+class Clipable (base class: UnityEngine.MonoBehaviour)
+	--Base class for a component can be clipped be UIClip
+
+	Members:
+		public bool m_dontClip : --Don't clip this component even if under control of a UIClip
+
+
+	Properties:
+		public virtual UnityEngine.Material NormalMaterial	(read only)
+		--The material used when not clipped
+
+		public virtual UnityEngine.Material ClipMaterial	(read & write)
+		--The material used when clipped
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class DeleSetter (base class: System.Object)
+	--Bind a delegate type field of a class instace to a method of a calss instance
+
+	Members:
+		public bool m_enable : --Use this binder
+
+		public UnityEngine.MonoBehaviour m_target : --The class instance which has the method
+
+		public string m_function : --The name of the method
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public bool bindDelegate (System.Type deleType, System.Object instance, string field)
+		--Bind the field to the method
+			System.Type deleType : --The Type of the delegate
+			System.Object instance : --The class instance which has the field
+			string field : --The field name
+			return : --Return true if bind successfully
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class abstract UIClipTouch (base class: UnityEngine.MonoBehaviour)
+	--A base class for component can be touched and clipped
+
+	Members:
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class abstract UIDragBase (base class: UIClipTouch)
+	--Base class for component can be draged
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+enum TextureType: --The texture display type for UIImage
+	NORMAL = 0
+	SLICE = 1
+	RADIUS = 2
+	FILL_V = 3
+	FILL_H = 4
+	FILL_R = 5
+	SLICE_FILL_V = 6
+	SLICE_FILL_H = 7
+	TILE = 8
+	TILE_H = 9
+	TILE_V = 10
+	WEB = 11
+
+
+enum AspectLock: --The aspect lock type
+	none = 0
+	lockWidth = 1
+	lockHeight = 2
+
+
+class UIImage (base class: UIMesh)
+	--The base class to display a image
+
+	Members:
+
+	Properties:
+		public AspectLock LockAspect	(read & write)
+		--The aspect lock type of this image
+
+		public float Aspect	(read & write)
+		--The aspect of this image
+
+		public TextureType TexType	(read & write)
+		--The texture type of this image
+
+		public int WebColumn	(read & write)
+		--If the texture type is WEB, the column number of this web
+
+		public int WebRow	(read & write)
+		--If the texture type is WEB, the row number of this web
+
+		public float Width	(read & write)
+		--The width of this image
+
+		public float Height	(read & write)
+		--The height of this image
+
+		public float FillValue	(read & write)
+		--If the texture type is a fill type, the fill factor of this image
+
+		public bool IsInverseFill	(read & write)
+		--If the texture type is a fill type, the fill dirction of this image
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public UnityEngine.Vector2 m_anchor : --The anchor position
+
+		public GradientBase m_gradient : --The gradient controller it used, if not use, set null
+
+		public bool m_dontClip : --Don't clip this component even if under control of a UIClip
+
+
+	Inherbit Properties:
+		public virtual UnityEngine.Vector2 BorderSize	(read only)
+		--The size of this component
+
+		public UnityEngine.MeshRenderer Render	(read only)
+		--The MeshRender this component use
+
+		public UnityEngine.Transform Tran	(read only)
+		--The trasnform of this component
+
+		public UnityEngine.Color CurrentColor	(read & write)
+		--The color of this component
+
+		public float Alpha	(read & write)
+		--The alpha of this component, the final alpha will be Alpha * CurrentColor.a
+
+		public virtual UnityEngine.Material ClipMaterial	(read & write)
+		--The material used when clipped
+
+
+	Inherbit Methods:
+		public virtual UnityEngine.Vector3 leftBottom ()
+		--The left bottom position of this component
+			return : --
+
+		public void meshVisible (bool visible)
+		--Show or hide the MeshRender and MeshFilter in inspector
+			bool visible : --Show or hide
+			return : --
+
+		public virtual void init ()
+		--Initialize the component
+			return : --
+
+		public virtual void repaint ()
+		--Used in editor, recreate mesh
+			return : --
+
+
+
+class abstract UIMesh (base class: Clipable)
+	--The base class for component use mesh
+
+	Members:
+		public UnityEngine.Vector2 m_anchor : --The anchor position
+
+		public GradientBase m_gradient : --The gradient controller it used, if not use, set null
+
+
+	Properties:
+		public virtual UnityEngine.Vector2 BorderSize	(read only)
+		--The size of this component
+
+		public virtual UnityEngine.Vector2 Size	(write only)
+		--The size of this component
+
+		public UnityEngine.MeshRenderer Render	(read only)
+		--The MeshRender this component use
+
+		public UnityEngine.Transform Tran	(read only)
+		--The trasnform of this component
+
+		public UnityEngine.Color CurrentColor	(read & write)
+		--The color of this component
+
+		public float Alpha	(read & write)
+		--The alpha of this component, the final alpha will be Alpha * CurrentColor.a
+
+
+	Constructors:
+
+	Methods:
+		public void meshVisible (bool visible)
+		--Show or hide the MeshRender and MeshFilter in inspector
+			bool visible : --Show or hide
+			return : --
+
+		public virtual UnityEngine.Vector3 leftBottom ()
+		--The left bottom position of this component
+			return : --
+
+		public virtual void repaint ()
+		--Used in editor, recreate mesh
+			return : --
+
+
+	Inherit Members:
+		public bool m_dontClip : --Don't clip this component even if under control of a UIClip
+
+
+	Inherbit Properties:
+		public virtual UnityEngine.Material ClipMaterial	(read & write)
+		--The material used when clipped
+
+
+	Inherbit Methods:
+		public virtual void init ()
+		--Initialize the component
+			return : --
+
+
+
+class UIRect (base class: System.Object)
+	--The rect class
+
+	Members:
+		public float m_xMin : --The left position
+
+		public float m_yMin : --The bottom position
+
+		public float m_xMax : --The right position
+
+		public float m_yMax : --The top position
+
+
+	Properties:
+		public UnityEngine.Vector2 Center	(read only)
+		--The center position of this rect
+
+		public float Width	(read & write)
+		--The width of this rect, set this value will change m_xMax
+
+		public float Height	(read & write)
+		--The height of this rect, set this value will change m_yMax
+
+
+	Constructors:
+		public .... ()
+		--Default constructor
+
+		public .... (UIRect other)
+		--Construct with another UIRect
+			UIRect other : --The other UIRect
+
+		public .... (UnityEngine.Rect rc)
+		--Construct with another Rect
+			UnityEngine.Rect rc : --The other Rect
+
+		public .... (float xMin, float yMin, float xMax, float yMax)
+		--Construct with 4 float
+			float xMin : --x min
+			float yMin : --y min
+			float xMax : --x max
+			float yMax : --y max
+
+
+	Methods:
+		public void setValue (UnityEngine.Vector3 min, UnityEngine.Vector3 max)
+		--Set the x, y value
+			UnityEngine.Vector3 min : --The left bottom point
+			UnityEngine.Vector3 max : --The right top point
+			return : --
+
+		public void setValue (UnityEngine.Rect rc)
+		--Set the value
+			UnityEngine.Rect rc : --A Rect
+			return : --
+
+		public void setValue (UIRect other)
+		--Set the value
+			UIRect other : --Another UIRect
+			return : --
+
+		public static UIRect op_Division (UIRect rc, UnityEngine.Vector2 v)
+		--Override operator for UIRect / Vector2
+			UIRect rc : --The UIRect
+			UnityEngine.Vector2 v : --The Vector2
+			return : --rc.m_xMin and rc.m_xMax will / v.x, rc.m_yMin and rc.m_yMax will / v.y
+
+		public static UIRect op_Division (UIRect rc, float v)
+		--Override operator for UIRect / float
+			UIRect rc : --The UIRect
+			float v : --The float
+			return : --rc.m_xMin and rc.m_xMax and rc.m_yMin and rc.m_yMax will / v
+
+		public void toWorld (UnityEngine.Transform t)
+		--Change the UIRect from local space to world space
+			UnityEngine.Transform t : --A transform to appoint the local space
+			return : --
+
+		public void toLocal (UnityEngine.Transform t)
+		--Change the UIRect from world space to local space
+			UnityEngine.Transform t : --A transform to appoint the local space
+			return : --
+
+		public void zero ()
+		--Set the x min, x max and y min and y max to 0
+			return : --
+
+		public bool equal (UIRect other)
+		--Check 2 UIRect is equal
+			UIRect other : --The other UIRect
+			return : --True if all parameters are equal
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UITouchAble (base class: UIClipTouch)
+	--Base class for component can reponse touch
+
+	Members:
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class DirGradient (base class: LinearGradient)
+	--Gradient horizontally or vertically
+
+	Members:
+		public bool m_isVertical : --Is it vertically
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public GradientColor[] m_colors : --The color configuration
+
+		public GradientColor[] m_secondColors : --The second configuration, this color is for UIText with effect color
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class GradientColor (base class: System.Object)
+	--The color configuration for gradient
+
+	Members:
+		public UnityEngine.Color m_color : --The color
+
+		public UnityEngine.Vector2 m_factor : --The position of this color in the gradient
+
+
+	Properties:
+		public float Factor	(read only)
+		--The factor's x
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class GradientBase (base class: UnityEngine.MonoBehaviour)
+	--The base class for gradient control. Keep in mind that gradient is based on vertex, like a image usually only have 4 vertexes, that means if you want to gradient it horizontally, it can only gradient between 2 colors, no matter how much colors you configed
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class LinearGradient (base class: GradientBase)
+	--Linear Gradient
+
+	Members:
+		public GradientColor[] m_colors : --The color configuration
+
+		public GradientColor[] m_secondColors : --The second configuration, this color is for UIText with effect color
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class RadiuGradient (base class: LinearGradient)
+	--Radial Gradient
+
+	Members:
+		public UnityEngine.Vector2 m_center : --The center of the gradient
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public GradientColor[] m_colors : --The color configuration
+
+		public GradientColor[] m_secondColors : --The second configuration, this color is for UIText with effect color
+
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class AtlasSprite (base class: System.Object)
+	--A sprite in atlas
+
+	Members:
+		public string m_name : --The name of the sprite
+
+		public UIRect m_uv : --The uv of the sprite
+
+		public UIRect m_slice : --The slice uv of the sprite
+
+		public UnityEngine.Vector2 m_size : --The size of the sprite
+
+		public UnityEngine.Vector4 m_trim : --If this sprite is trimed, the trim information of the sprite
+
+		public bool m_isTrim : --Is the sprite trimed
+
+
+	Properties:
+
+	Constructors:
+		public .... (string name)
+		--Constrouct with name
+			string name : --The name of the sprite
+
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIAtlas (base class: UnityEngine.MonoBehaviour)
+	--Present an atlas used for UISprite
+
+	Members:
+		public UnityEngine.Material m_mat : --The material this atlas used
+
+		public string m_name : --The name of the atlas
+
+		public int m_padding : --The padding between sprites
+
+		public int m_maxSize : --The max size of this altas
+
+		public int m_minTrimEdge : --If none of the side of a spirte can be trimed more then this length, then don't trim this sprite
+
+		public bool m_trim : --Should trim sprite in this atlas
+
+		public string[] m_dirPaths : --When build this atlas, textures in these directories will be include, won't automatically include the sub directories
+
+
+	Properties:
+		public System.Collections.Generic.Dictionary<string, AtlasSprite> Sprites	(read only)
+		--A dictionary contains all the sprites of this atlas
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class ButtonColorUI (base class: System.Object)
+	--UIMesh will change color with the UIButton's state
+
+	Members:
+		public UIMesh m_ui : --The UIMesh
+
+		public UnityEngine.Color m_normal : --Color for normal state
+
+		public UnityEngine.Color m_press : --Color for pressed state
+
+		public UnityEngine.Color m_disable : --Color for disable state
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIButton (base class: UIClipTouch)
+	--Present a button
+
+	Members:
+		public const int NORMAL = 0 : --State normal
+
+		public const int PRESS = 1 : --State pressed
+
+		public const int DISABLE = 2 : --State disable
+
+		public bool m_isToggle : --If true, the button is like a switch, click it will change the state between normal and press
+
+		public UnityEngine.Vector3 m_pressScale : --The scale of the button when pressed
+
+		public UnityEngine.Vector3 m_pressOffset : --The offset of the button when pressed
+
+		public UISprite m_sprite : --The sprite it controled
+
+		public ButtonColorUI[] m_buttonColorUI : --Other UIMesh it controled
+
+
+	Properties:
+		public bool ChangeWhenClick	(write only)
+		--Default is true, If false, the display won't change when press or release
+
+		public UnityEngine.Vector3 OrigiScale	(write only)
+		--The original scale of the button
+
+		public UnityEngine.Vector3 OrigiPos	(write only)
+		--The original position of the button
+
+		public bool Enable	(read & write)
+		--Set the button is enable or disable
+
+
+	Constructors:
+
+	Methods:
+		public string getSpriteName (int state)
+		--Get the sprite name of a state
+			int state : --The state
+			return : --The sprite name
+
+		public void setSpriteName (string name, int index)
+		--Set the sprite name of a state
+			string name : --The sprite name
+			int index : --The state
+			return : --
+
+		public UnityEngine.Color getSpriteColor (int state)
+		--Get the color of a state
+			int state : --The state
+			return : --The color
+
+		public void setSpriteColor (UnityEngine.Color col, int index)
+		--Set the color of a state
+			UnityEngine.Color col : --The color
+			int index : --The state
+			return : --
+
+
+	Inherit Members:
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+enum ButtonTriggerType: --The type of triggering the button message
+	PRESS = 0
+	RELEASE = 1
+
+
+class UIButtonMessage (base class: UITouchAble)
+	--Present a response for a touch
+
+	Members:
+		public ButtonTriggerType m_triggerType : --Trigger type
+
+		public UnityEngine.GameObject m_target : --The gameObject sent message to
+
+		public string m_function : --The method of the message
+
+		public string m_sound : --Sound played when triggered
+
+		public string m_buttonId : --A string id
+
+		public int m_buttonIntId : --A int id
+
+		public UIPanel m_panel : --The UIPanel control this button, if set this value, this won't be triggered whe the panel is opening or closing
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class UICamera (base class: UnityEngine.MonoBehaviour)
+	--Attach to a camera
+
+	Members:
+		public float m_screenH : --The screen height of this camera, if its projection is Orthographic
+
+		public bool m_isPiexlPrefact : --If true, the m_screenH will be set to the real screen height of device
+
+		public int m_cameraIndex : --The index of this UICamera, this shouldn't be too large
+
+
+	Properties:
+		public UICamera Instance	(read only)
+		--The UICamera with the smallest index
+
+		public UnityEngine.Vector2 ScreenSize	(read only)
+		--The screen size of this camera
+
+		public UnityEngine.Camera RealCamera	(read only)
+		--The Camera attached to this gameObject
+
+		public float ScreenWidth	(read only)
+		--The width of the screen of this camera
+
+
+	Constructors:
+
+	Methods:
+		public static UICamera getInstance (int index)
+		--Get the UICamera with the index
+			int index : --
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UITouch (base class: System.Object)
+	--Present a touch
+
+	Members:
+		public UnityEngine.Collider m_target : --The Collider the touch pressed
+
+		public UICameraRay m_cameraRay : --The UICameraRay of the touch
+
+		public UnityEngine.Vector3 m_hitPoint : --The position or an offset of the touch in world space
+
+		public UnityEngine.Vector3 m_touchPos : --The screen position of this touch
+
+		public bool m_isInside : --If the touch inside the collider
+
+		public int m_id : --The id of the touch
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UICameraRay (base class: UnityEngine.MonoBehaviour)
+	--Attach to a camera, handle the touch
+
+	Members:
+		public bool m_useGesture : --This is not used
+
+
+	Properties:
+		public UnityEngine.Camera RealCamera	(read only)
+		--The camera of this
+
+		public int TouchCount	(read only)
+		--The touch count
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UICameraTexture (base class: UnityEngine.MonoBehaviour)
+	--This copy the image a camera render to a RenderTexture every frame
+
+	Members:
+		public UnityEngine.RenderTexture m_texture : --The RenderTexture
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UICheckBox (base class: UITouchAble)
+	--Present a checkbox
+
+	Members:
+		public UIMesh m_image : --The image showed when check
+
+		public UnityEngine.GameObject m_target : --The gameObject to send message to
+
+		public string m_message : --The method of the message
+
+		public UITween m_tween : --This tween played forward when selected and backward when unselected
+
+		public string m_sound : --The sound played when click it
+
+
+	Properties:
+		public bool IsSelected	(read & write)
+		--Is the checkbox checked
+
+		public bool ImageVisible	(write only)
+		--Set the selected state without play tween
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class ShaderPair (base class: System.Object)
+	--A pair of shader to use for cliping and uncliping
+
+	Members:
+		public UnityEngine.Shader m_shader : --Shader used for uncliping
+
+		public UnityEngine.Shader m_clipShader : --Shader used for cliping
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIClip (base class: UnityEngine.MonoBehaviour)
+	--A rect clip for components it controlled, keep in mind that the Collider it clipped won't be touched outside of the clip, but it will still block the touch for other collider behind it
+
+	Members:
+		public ShaderPair[] m_shaders : --The shader pairs
+
+		public int m_defaultPair : --The index of the default pair
+
+		public int m_cameraIndex : --The camera render this clip
+
+		public UIClip m_parent : --The parent clip, the clip area will be the intersection of itself's and its parent's
+
+		public bool m_hasChildClip : --If this clip has child clip, please set true
+
+		public bool m_reverseForRenderTexture : --If this is render to a RenderTexture, set this true
+
+
+	Properties:
+		public UnityEngine.Vector4 ClipRect	(read & write)
+		--The clip area, xy is the center, zw is the width and height
+
+
+	Constructors:
+
+	Methods:
+		public bool clipPoint (UnityEngine.Vector3 v)
+		--Test if a point is in the clip area
+			UnityEngine.Vector3 v : --
+			return : --True if the point is inside
+
+		public void reset ()
+		--Reset the clip
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIDragCell (base class: UIListCell)
+	--A cell used in drag panel
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public float m_left : --The left offset to the center of this cell
+
+		public float m_right : --The right offset to the center of this cell
+
+		public float m_top : --The top offset to the center of this cell
+
+		public float m_bottom : --The bottom offset to the center of this cell
+
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public int Index	(read & write)
+		--The index of the cell in list
+
+		public UIDragBase DragBase	(read & write)
+		--The list or drag panel it belonged to
+
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class UIDragItem (base class: UITouchAble)
+	--A item can be draged by touch
+
+	Members:
+		public bool m_useForDrop : --If this item trigger drop event when touch released
+
+		public UnityEngine.GameObject m_target : --The target send message to
+
+		public string m_dropFunction : --The message send when drop it on a UIDropOn, pass itself as parameter
+
+		public string m_enterFunction : --The message send when it enter a UIDropOn, pass itself as parameter
+
+		public string m_exitFunction : --The message send when it exit a UIDropOn, pass itself as parameter
+
+		public UIDropItem m_dropItem : --If used for drop, this need a UIDropItem to be attched, if don't set this, will add one when update
+
+
+	Properties:
+		public UIDropOn DropOn	(read & write)
+		--The UIDropOn triggered the message
+
+
+	Constructors:
+
+	Methods:
+		public void resetToStartPos ()
+		--Reset the position of this gameObject
+			return : --
+
+
+	Inherit Members:
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+enum UIAlignH: --The horizontally alignment
+	left = 0
+	center = 1
+	right = 2
+
+
+enum UIAlignV: --The vertically alignment
+	top = 0
+	center = 1
+	bottom = 2
+
+
+class UIDragPanel (base class: UIDragBase)
+	--A panel conatins serval drag cells, the panel can be dragged to scroll like a list
+
+	Members:
+		public UnityEngine.Vector2 m_dirction : --The drag direction scale
+
+		public UnityEngine.Vector2 m_damp : --The drag offset will multiply this vector when you have dragged the panel to limit
+
+		public UnityEngine.Vector2 m_center : --The center of the panel
+
+		public UnityEngine.Vector2 m_size : --The size of the panel
+
+		public UnityEngine.Transform m_offset : --All the cells should be put under this transform, this is the transform actually moved
+
+		public UITweenPos m_tween : --The tween used to spring back
+
+		public bool m_lockWhenFit : --If true, when the content of this panel smaller then the size, you can't drag it
+
+
+	Properties:
+		public bool IsDraging	(read only)
+		--If the panel is being dragged
+
+
+	Constructors:
+
+	Methods:
+		public void needUpdateBound ()
+		--Mark the panel that need to recompute the bound
+			return : --
+
+		public void addCell (UIDragCell cell)
+		--Add a cell to the panel
+			UIDragCell cell : --The cell added
+			return : --
+
+		public void removeCell (UIDragCell cell)
+		--Remov a cell from the panel
+			UIDragCell cell : --The removed cell
+			return : --
+
+
+	Inherit Members:
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class UIDropItem (base class: UnityEngine.MonoBehaviour)
+	--This script and a Collider present a item can be droped on UIDropOn
+
+	Members:
+		public UIDragItem m_dragItem : --The UIDragItem attached to it
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIDropOn (base class: UnityEngine.MonoBehaviour)
+	--A item that UIDropItem could dropped on it
+
+	Members:
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIFont (base class: UnityEngine.ScriptableObject)
+	--A font
+
+	Members:
+		public UnityEngine.Font m_font : --The font asset
+
+		public UnityEngine.Material m_material : --The material this font use
+
+		public System.Collections.Generic.List<UIFontData> m_datas : --A list of font datas
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public UIFontData getData (int size)
+		--Get a font data by the font size
+			int size : --The font size
+			return : --The font data
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIFontData (base class: System.Object)
+	--This data is information for the appointed font size read from the font. To add a data of a size, you should change the font size of the font asset, and then click add data of the UIFont
+
+	Members:
+		public int m_fontSize : --The font size
+
+		public int m_lineHeight : --The line height of this size
+
+		public int m_fontAscent : --The font ascent of this size
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIInput (base class: UITouchAble)
+	--Present a text filed you can input text
+
+	Members:
+		public UIText m_label : --The UIText to display the input
+
+		public int m_maxLength : --The max length of the text
+
+		private string m_placeHolder : --The placeholder text
+
+		public bool m_isPlaceHoderId : --If the placeholder is a text or a text id
+
+		public bool m_isPassword : --Is this text a password
+
+		public UnityEngine.Color m_placeHolderColor : --The color of the placeholder text
+
+		public UnityEngine.TouchScreenKeyboardType m_type : --The key board type
+
+		public bool m_multiLine : --If it's a multiline text
+
+
+	Properties:
+		public string PlaceHolder	(read & write)
+		--The placeholder text
+
+		public string Text	(read & write)
+		--The display text
+
+		public bool IsSelected	(read only)
+		--Is this input has the focus
+
+
+	Constructors:
+
+	Methods:
+		public static void cancelCurrent ()
+		--Cancel the foucs of the current input, hide the keyboard
+			return : --
+
+		public void clear ()
+		--Clear the text
+			return : --
+
+
+	Inherit Members:
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class UIJoyStick (base class: UnityEngine.MonoBehaviour)
+	--Present a virtual stick
+
+	Members:
+		public UnityEngine.Vector2 m_axisScale : --The scale for x and y axis
+
+		private float m_maxR : --The max radius the stick can move to
+
+		public UnityEngine.Transform m_stickSprite : --The gameObject of the stick
+
+		public UnityEngine.Transform m_bgSprite : --The gameObject fo the background
+
+		public bool m_isFixPos : --If true, the background won't move
+
+
+	Properties:
+		public UnityEngine.Vector2 Value	(read only)
+		--The input of this joy stick
+
+		public bool IsPressed	(read only)
+		--If the joy stick is pressed
+
+		public float R	(read & write)
+		--The max radiu the stick can move to
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIList (base class: UIDragBase)
+	--Present a list
+
+	Members:
+		public float m_size : --The size of the list
+
+		public UnityEngine.GameObject m_prefab : --The prefab of the cell, the cell will be created from this prefab at runtime
+
+		public bool m_isVertical : --If the list scrolls vertical
+
+		public float m_padding : --The padding between 2 cells
+
+		public int m_cellCount : --The number of cell created, usually you need 2 more cells
+
+		public bool m_isLoop : --If the list is a loop
+
+		public bool m_lockWhenFit : --If true, when the display content size smaller then list size, you can't drag it
+
+		public UIClip m_listClip : --The clip used to clip content in the list
+
+		public bool m_alignToCell : --If true, when you release touch of the list, it will automatically scroll to the neareast cell to make the edge of the list align the edge of the cell
+
+		public float m_alignToCellTime : --The time of the list scrolling to align to cell
+
+		public UnityEngine.Transform m_offsetAnchor : --All cell should be put under this transform, this is the transform acturally moved
+
+		public UITweenPos m_tween : --The tween used to scroll
+
+		public bool m_controlByScale : --If true, this list will be controlled by a UIScale
+
+		public bool m_autoCreate : --If true, the cells will be created when awake
+
+		public DeleSetter m_delegateScrollStop : --Delegate binder for scroll stop
+
+		public DeleSetter m_delegateFillData : --Delegate binder for setup cells
+
+		public DeleSetter m_delegateGetCellSize : --Delegate binder for get a cell's size
+
+		public UIList.OnScrollStop m_scrollStop : --Scroll stop callback, called when the scrolling stoped
+
+		public UIList.OnFillData m_fillData : --Setup cell callback, called when a cell will be displayed
+
+		public UIList.GetCellSize m_getCellSize : --Get cell size callback, called when need the size of the cell
+
+
+	Properties:
+		public System.Collections.Generic.LinkedList<UIListCell> Cells	(read only)
+		--The list of cells
+
+		public int DataLength	(read & write)
+		--The length of the data list
+
+
+	Constructors:
+
+	Methods:
+		public void resetList (int dataLength)
+		--Reset the list with a new length of data
+			int dataLength : --The length of the data
+			return : --
+
+		public void resetList ()
+		--Reset the list with current data length
+			return : --
+
+		public void resetListToIndex (int i, int totalLen)
+		--Reset the list with a new length of data, and scroll to a cell
+			int i : --The cell index
+			int totalLen : --The length of the data
+			return : --
+
+		public void resetListToIndex (int i)
+		--Reset the list with the current length of data, and scroll to a cell
+			int i : --The cell index
+			return : --
+
+		public void refreshDisplay ()
+		--Resetup all cells
+			return : --
+
+		public void refreshDisplay (int dataLength)
+		--Resetup all cells and change the data length
+			int dataLength : --The data length
+			return : --
+
+		public void clear ()
+		--Clear all cells
+			return : --
+
+		public System.Collections.Generic.LinkedListNode<UIListCell> getFirstShowNode ()
+		--Get the first visible cell
+			return : --The LinkedListNode conatins the cell
+
+		public void autoScroll (float speed)
+		--Make the list keep scrolling
+			float speed : --The offset per second
+			return : --
+
+		public void scroll (float offset, float time)
+		--Scroll the list by a offset in a duration
+			float offset : --The offset
+			float time : --The duration
+			return : --
+
+		public void scroll (int offset, float time)
+		--Scroll the list by a number of cells in a duration
+			int offset : --The number of cells
+			float time : --The duration
+			return : --
+
+
+	Inherit Members:
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+delegate public virtual void UIList.OnScrollStop ()
+--Delegate define of scroll stop
+	return : --
+delegate public virtual void UIList.OnFillData (int index, UnityEngine.GameObject cellGo)
+--Deleage define fo setup a cell, index is the index of the data, cellGo is the gameObject of the cell
+	int index : --
+	UnityEngine.GameObject cellGo : --
+	return : --
+delegate public virtual float UIList.GetCellSize (int index)
+--Delegate define of get a cell size, index is the index of the data
+	int index : --
+	return : --
+class UIListCell (base class: UITouchAble)
+	--A cell in list
+
+	Members:
+		public float m_left : --The left offset to the center of this cell
+
+		public float m_right : --The right offset to the center of this cell
+
+		public float m_top : --The top offset to the center of this cell
+
+		public float m_bottom : --The bottom offset to the center of this cell
+
+
+	Properties:
+		public int Index	(read & write)
+		--The index of the cell in list
+
+		public UIDragBase DragBase	(read & write)
+		--The list or drag panel it belonged to
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class MessageData (base class: System.Object)
+	--The data struct of data passed to panel
+
+	Members:
+		public System.Object m_data : --The first data in the data array
+
+		public System.Object[] m_datas : --The data array
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIPanel (base class: UnityEngine.MonoBehaviour)
+	--Present a panel
+
+	Members:
+		public string m_id : --The id of the panel
+
+		public UITweenPlayer m_playWhenShow : --A tween player played when the panel showed
+
+		public UITweenPlayer m_playWhenHide : --A tween player played when the panel hided
+
+		public bool m_isPopup : --If this panel is a panel or a popup, popup will be destroyed after close, but can show multi popup of the same id
+
+		public bool m_clearDataWhenClose : --If true, the data of the panel will be cleared after close
+
+		public UITween[] m_bringInForward : --A list of tween played when bring in forward
+
+		public UITween[] m_bringOutForward : --A list of tween played when bring out forward
+
+		public UITween[] m_bringInBackward : --A list of tween played when bring in backward
+
+		public UITween[] m_bringOutBackward : --A list of tween played when bring out forward
+
+		public string m_bringInSound : --The sound played when bring in
+
+		public string m_bringOutSound : --The sound played when bring out
+
+
+	Properties:
+		public UIPanelGroup Group	(read & write)
+		--The panel group it belongs to
+
+		public bool IsVisible	(read only)
+		--Is this panel visible
+
+		public bool IsTweenPlaying	(read only)
+		--Is the panel bring in or out tweens playing
+
+		public float Order	(read & write)
+		--The depth of the order, set this value won't do anything
+
+		public System.Object[] Datas	(read & write)
+		--The datas panel recevied from a MessageData
+
+
+	Constructors:
+
+	Methods:
+		public void enableOpenTween (bool enable, bool isForward)
+		--Enable or diable the tweens when bring in
+			bool enable : --Enable or disable
+			bool isForward : --Is bring in forward or backward
+			return : --
+
+		public void enableHideTween (bool enable, bool isForward)
+		--Enable or diable the tweens when bring out
+			bool enable : --Enable or disable
+			bool isForward : --Is bring out forward or backward
+			return : --
+
+		public bool isOpenTweenEnable (bool isForward)
+		--If the tweens enabled when bring in
+			bool isForward : --Is bring in forward or backward
+			return : --True if enabled
+
+		public bool isHideTweenEnable (bool isForward)
+		--If the tweens enabled when bring out
+			bool isForward : --Is bring out forward or backward
+			return : --True if enabled
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIPanelGroup (base class: UnityEngine.MonoBehaviour)
+	--Controls a group of panels, when awake, this group will register itself to UIPanelManager
+
+	Members:
+		public System.Collections.Generic.List<UIPanel> m_panelList : --The list of panels
+
+		public float m_top : --The most front z of the panels
+
+		public float m_bottom : --The most back z of the panels
+
+		public string m_startPanel : --If not empty, this panel will be open when awake
+
+		public System.Collections.Generic.LinkedList<UIPanel> m_openedPanel : --The opend panel stack
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public UIPanel getVisiblePanel (string id)
+		--Get a opened panel by id
+			string id : --The id of the panel
+			return : --The panel, if not found, return null
+
+		public void sendBehind (UIPanel p)
+		--Swap the panel and the panel behind it
+			UIPanel p : --The panel
+			return : --
+
+		public void bringFornt (UIPanel p)
+		--Swap the panel and the panel before it
+			UIPanel p : --The panel
+			return : --
+
+		public void bringToMostFornt (UIPanel p)
+		--Send a panel to the most front
+			UIPanel p : --The panel
+			return : --
+
+		public void sendToMostBehind (UIPanel p)
+		--Send a panel to the most bottom
+			UIPanel p : --The panel
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIPanelManager (base class: UnityEngine.MonoBehaviour)
+	--The manager of all panels
+
+	Members:
+		public string m_watingPopupName : --NetworkManager will show a waiting popup when sending a message, until it recevied the response, this is the id of the waiting popup
+
+
+	Properties:
+		public UIPanelManager Instance	(read only)
+		--The instance of the class
+
+
+	Constructors:
+
+	Methods:
+		public UIPanel getMostBehindPanel ()
+		--Get the most behind panel
+			return : --The panel
+
+		public UIPanel getMostFrontPanel ()
+		--Get the most front panel
+			return : --The panel
+
+		public void pushPanelOpenStack (string id)
+		--Push a id to a stack, this stack is only for record
+			string id : --The id
+			return : --
+
+		public string popPanelOpenStack ()
+		--Popup the panel id from the stack
+			return : --The id
+
+		public void clearPanelOpenStack ()
+		--Clear the stack
+			return : --
+
+		public void refreshPanel (string id, params System.Object[] datas)
+		--Refresh a panel
+			string id : --The id of the panel
+			System.Object[] datas : --The datas you want to send to the panel
+			return : --
+
+		public void refreshPanel (string id)
+		--Refresh a panel
+			string id : --
+			return : --
+
+		public UIPanel openPanel (string id, bool isForward)
+		--Open a panel by id
+			string id : --The id of the panel
+			bool isForward : --If open it forward
+			return : --The panel opened, or null if no such panel
+
+		public UIPanel openPanel (string id, bool isForward, params System.Object[] datas)
+		--Open a panel by id
+			string id : --The id of the panel
+			bool isForward : --If open it forward
+			System.Object[] datas : --The datas you want to send to the panel
+			return : --The panel opened, or null if no such panel
+
+		public void closePanel (UIPanel p, bool isForward = True)
+		--Close a panel
+			UIPanel p : --The panel
+			bool isForward : --If close it forward
+			return : --
+
+		public void closePanel (string id, bool isForward = True)
+		--Close a panel by id, popup can't be closed by id
+			string id : --The panel id
+			bool isForward : --If close it forward
+			return : --
+
+		public UIPanel getVisiblePanel (string id)
+		--Get a opened panel by id
+			string id : --The panel id
+			return : --The panel, or null if not found
+
+		public UIPanel getUIPanel (string id)
+		--Get a panel by id
+			string id : --The panel id
+			return : --The panel, or null if not found
+
+		public T getCustomPanel<T> (string id) where T : UnityEngine.MonoBehaviour
+		--Get a script of type T attached to the panel with the id
+			string id : --The panel id
+			return : --The script, or null if not found
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIRadioButtonGroup (base class: UnityEngine.MonoBehaviour)
+	--A group of radio buttons
+
+	Members:
+		public UICheckBox[] m_checkBoxs : --The check boxes as the radio buttons
+
+		public int m_defaultSelect : --The default selected button index
+
+		public UnityEngine.GameObject m_target : --The gameObject send message to
+
+		public string m_message : --The method of message
+
+
+	Properties:
+		public int SelectIndex	(read & write)
+		--Current selected button index
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UISlide (base class: UITouchAble)
+	--A slider with a background and a slide block
+
+	Members:
+		public UIMesh m_bg : --The background
+
+		public UIMesh m_block : --The slide block
+
+		public bool m_vertical : --If the slider is vertical
+
+		public bool m_isReversal : --If reverse the value of 2 ends
+
+		public UnityEngine.GameObject m_target : --The gameObject send message to
+
+		public string m_message : --The method of the message
+
+
+	Properties:
+		public bool IsSliding	(read only)
+		--If it's sliding
+
+		public float Value	(read & write)
+		--The value of the slider
+
+
+	Constructors:
+
+	Methods:
+		public void resetBound ()
+		--Recompute the bound
+			return : --
+
+
+	Inherit Members:
+		public bool m_useForDarg : --If true, this component will be affect by LGUI.m_dragThreshold
+
+		public bool m_multiTouch : --If this component response for touch when there're more then one finger
+
+		public bool m_dontClip : --If true, won't clip this
+
+
+	Inherbit Properties:
+		public UIClip Clip	(read & write)
+		--The UIClip that clip this
+
+
+	Inherbit Methods:
+
+
+class UISprite (base class: UIImage)
+	--Present a sprite
+
+	Members:
+
+	Properties:
+		public UIAtlas Atlas	(read & write)
+		--The UIAtlas
+
+		public string Sprite1Name	(read & write)
+		--This is the sprite for uv1
+
+		public string SpriteName	(read & write)
+		--The name of the sprite
+
+
+	Constructors:
+
+	Methods:
+		public void snap ()
+		--Set the size of the sprite same as the size of the texture
+			return : --
+
+		public void snap (float size)
+		--Set the size of the sprite same as the size of the texture, but with limit, keep the aspect
+			float size : --The width and height after snap won't larger then this
+			return : --
+
+		public void snap (float width, float height)
+		--Set the size of the sprite same as the size of the texture, but with limit, keep the aspect
+			float width : --The width after snap won't larger then this
+			float height : --The height after snap won't larger then this
+			return : --
+
+
+	Inherit Members:
+		public UnityEngine.Vector2 m_anchor : --The anchor position
+
+		public GradientBase m_gradient : --The gradient controller it used, if not use, set null
+
+		public bool m_dontClip : --Don't clip this component even if under control of a UIClip
+
+
+	Inherbit Properties:
+		public AspectLock LockAspect	(read & write)
+		--The aspect lock type of this image
+
+		public float Aspect	(read & write)
+		--The aspect of this image
+
+		public TextureType TexType	(read & write)
+		--The texture type of this image
+
+		public int WebColumn	(read & write)
+		--If the texture type is WEB, the column number of this web
+
+		public int WebRow	(read & write)
+		--If the texture type is WEB, the row number of this web
+
+		public float Width	(read & write)
+		--The width of this image
+
+		public float Height	(read & write)
+		--The height of this image
+
+		public float FillValue	(read & write)
+		--If the texture type is a fill type, the fill factor of this image
+
+		public bool IsInverseFill	(read & write)
+		--If the texture type is a fill type, the fill dirction of this image
+
+		public virtual UnityEngine.Vector2 BorderSize	(read only)
+		--The size of this component
+
+		public UnityEngine.MeshRenderer Render	(read only)
+		--The MeshRender this component use
+
+		public UnityEngine.Transform Tran	(read only)
+		--The trasnform of this component
+
+		public UnityEngine.Color CurrentColor	(read & write)
+		--The color of this component
+
+		public float Alpha	(read & write)
+		--The alpha of this component, the final alpha will be Alpha * CurrentColor.a
+
+		public virtual UnityEngine.Material ClipMaterial	(read & write)
+		--The material used when clipped
+
+
+	Inherbit Methods:
+		public virtual UnityEngine.Vector3 leftBottom ()
+		--The left bottom position of this component
+			return : --
+
+		public void meshVisible (bool visible)
+		--Show or hide the MeshRender and MeshFilter in inspector
+			bool visible : --Show or hide
+			return : --
+
+		public virtual void init ()
+		--Initialize the component
+			return : --
+
+		public virtual void repaint ()
+		--Used in editor, recreate mesh
+			return : --
+
+
+
+class UITabBtnGroup (base class: UnityEngine.MonoBehaviour)
+	--A group of tab buttons
+
+	Members:
+		public UIButton[] m_buttons : --The tab buttons
+
+		public UnityEngine.GameObject m_target : --The gameObject send message to
+
+		public string m_message : --The method of the message
+
+		public int m_defaultSelect : --The default selected button index
+
+		public bool m_sendWhenStart : --If true, this will send the message when start
+
+
+	Properties:
+		public int SelectIndex	(read & write)
+		--The current selected button index
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+enum TextAlign: --The alignment of text
+	left = 0
+	center = 1
+	right = 2
+
+
+class CharImage (base class: System.Object)
+	--This is a image displayed in the text
+
+	Members:
+		public UIMesh m_image : --The image
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+enum TextEffect: --The effect of a text
+	NONE = 0
+	OUT_LINE = 1
+	SHADOW = 2
+
+
+class UIText (base class: UIMesh)
+	--Present a label to display text
+
+	Members:
+		public System.Collections.Generic.List<CharImage> m_images : --Image displayed in the text
+
+		public bool m_isEncoding : --If true, the text can use some encode char to change colors or styles
+
+		public TextAlign m_textAlign : --The alignment of the text
+
+		public float m_maxWidth : --The max width of the text
+
+		public int m_maxLine : --The max line number of the text
+
+		public float m_lineSpace : --Space between lines
+
+		public string m_localizeText : --The text id, if set this, the text will be changed depend on the language
+
+		public string m_localizeFont : --The font resource is, if set, the font will be changed depend on the language
+
+
+	Properties:
+		public float Width	(read only)
+		--The width of the text
+
+		public float Height	(read only)
+		--The height of the text
+
+		public bool WrapByWord	(read & write)
+		--Should wrap by word, only work when current lanugae is wrap by word
+
+		public UnityEngine.FontStyle Style	(read & write)
+		--The font style
+
+		public int FontSize	(read & write)
+		--The font size
+
+		public bool HasCursor	(read & write)
+		--If display a cursor when use in input
+
+		public TextEffect Effect	(read & write)
+		--Text effect
+
+		public UnityEngine.Vector2 EffectSize	(read & write)
+		--The effect size
+
+		public UnityEngine.Color EffectColor	(read & write)
+		--The effect color
+
+		public string RealText	(read & write)
+		--The raw string of the text
+
+		public string DisplayText	(read only)
+		--The display string of the text
+
+		public UIFont CurrentFont	(read & write)
+		--Current font
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public UnityEngine.Vector2 m_anchor : --The anchor position
+
+		public GradientBase m_gradient : --The gradient controller it used, if not use, set null
+
+		public bool m_dontClip : --Don't clip this component even if under control of a UIClip
+
+
+	Inherbit Properties:
+		public UnityEngine.MeshRenderer Render	(read only)
+		--The MeshRender this component use
+
+		public UnityEngine.Transform Tran	(read only)
+		--The trasnform of this component
+
+		public UnityEngine.Color CurrentColor	(read & write)
+		--The color of this component
+
+		public float Alpha	(read & write)
+		--The alpha of this component, the final alpha will be Alpha * CurrentColor.a
+
+		public virtual UnityEngine.Material ClipMaterial	(read & write)
+		--The material used when clipped
+
+
+	Inherbit Methods:
+		public virtual void repaint ()
+		--Used in editor, recreate mesh
+			return : --
+
+		public virtual UnityEngine.Vector3 leftBottom ()
+		--The left bottom position of this component
+			return : --
+
+		public void meshVisible (bool visible)
+		--Show or hide the MeshRender and MeshFilter in inspector
+			bool visible : --Show or hide
+			return : --
+
+		public virtual void init ()
+		--Initialize the component
+			return : --
+
+
+
+class UITexture (base class: UIImage)
+	--Present a texture to display
+
+	Members:
+		public bool m_unloadWhenDisable : --If true, the texture of the material will be set null when deactive
+
+
+	Properties:
+		public UIRect SliceRect	(read & write)
+		--The slice rect for slice type
+
+		public bool IsTrim	(read & write)
+		--If the texture is trimed
+
+		public UnityEngine.Vector4 TrimVector	(read & write)
+		--The margin of trim
+
+		public bool PartImage	(read & write)
+		--If display part of the texture
+
+		public UnityEngine.Material CurMaterial	(read & write)
+		--The current material
+
+		public UnityEngine.Shader CurShader	(read & write)
+		--The current shader
+
+		public UnityEngine.Texture CurTexture	(read & write)
+		--The current texture
+
+
+	Constructors:
+
+	Methods:
+		public void displaySprite (AtlasSprite ats)
+		--Display a sprite
+			AtlasSprite ats : --The sprite want to display
+			return : --
+
+		public UnityEngine.Vector2 getTextureSize ()
+		--Get the size of the texture
+			return : --The size
+
+		public void snap ()
+		--Set the size of the UITexture same as the size of the texture
+			return : --
+
+		public void snap (float size)
+		--Set the size of the UITexture same as the size of the texture, but with limit, keep the aspect
+			float size : --The width and height after snap won't larger then this
+			return : --
+
+		public void snap (float maxW, float maxH)
+		--Set the size of the UITexture same as the size of the texture, but with limit, keep the aspect
+			float maxW : --
+			float maxH : --
+			return : --
+
+
+	Inherit Members:
+		public UnityEngine.Vector2 m_anchor : --The anchor position
+
+		public GradientBase m_gradient : --The gradient controller it used, if not use, set null
+
+		public bool m_dontClip : --Don't clip this component even if under control of a UIClip
+
+
+	Inherbit Properties:
+		public AspectLock LockAspect	(read & write)
+		--The aspect lock type of this image
+
+		public float Aspect	(read & write)
+		--The aspect of this image
+
+		public TextureType TexType	(read & write)
+		--The texture type of this image
+
+		public int WebColumn	(read & write)
+		--If the texture type is WEB, the column number of this web
+
+		public int WebRow	(read & write)
+		--If the texture type is WEB, the row number of this web
+
+		public float Width	(read & write)
+		--The width of this image
+
+		public float Height	(read & write)
+		--The height of this image
+
+		public float FillValue	(read & write)
+		--If the texture type is a fill type, the fill factor of this image
+
+		public bool IsInverseFill	(read & write)
+		--If the texture type is a fill type, the fill dirction of this image
+
+		public virtual UnityEngine.Vector2 BorderSize	(read only)
+		--The size of this component
+
+		public UnityEngine.MeshRenderer Render	(read only)
+		--The MeshRender this component use
+
+		public UnityEngine.Transform Tran	(read only)
+		--The trasnform of this component
+
+		public UnityEngine.Color CurrentColor	(read & write)
+		--The color of this component
+
+		public float Alpha	(read & write)
+		--The alpha of this component, the final alpha will be Alpha * CurrentColor.a
+
+		public virtual UnityEngine.Material ClipMaterial	(read & write)
+		--The material used when clipped
+
+
+	Inherbit Methods:
+		public virtual UnityEngine.Vector3 leftBottom ()
+		--The left bottom position of this component
+			return : --
+
+		public void meshVisible (bool visible)
+		--Show or hide the MeshRender and MeshFilter in inspector
+			bool visible : --Show or hide
+			return : --
+
+		public virtual void init ()
+		--Initialize the component
+			return : --
+
+		public virtual void repaint ()
+		--Used in editor, recreate mesh
+			return : --
+
+
+
+class UITextureLoader (base class: UnityEngine.MonoBehaviour)
+	--Used to load a texture to a UITexture, attach this to a UITexture, it will load and unload the texture when enable and disable
+
+	Members:
+		public string m_textureName : --The path of the texture
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIHpBar (base class: UnityEngine.MonoBehaviour)
+	--This is a hp bar, it can display the hp decrease by animation
+
+	Members:
+		public UIImage m_foreground : --The foreground of the hp, this diplays the true hp value
+
+		public UIImage m_background : --The background of the hp, this displays the animation of hp decrease
+
+		public float m_animationTime : --The decrease time
+
+		public bool m_realTime : --If use the real time
+
+
+	Properties:
+		public float Value	(read & write)
+		--The true hp value, from 0 to 1
+
+
+	Constructors:
+
+	Methods:
+		public void resetValue (float v)
+		--Set the hp value to a new value without animation
+			float v : --The new value
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIMask (base class: UnityEngine.MonoBehaviour)
+	--This is a mask with a hole, this effect is very useful for tutorial
+
+	Members:
+		public UnityEngine.Material m_mat : --The materail used for the mask
+
+		public string m_vectorName : --The vector name in the material
+
+		public UnityEngine.Transform m_unMaskTrans : --The transform this unmasked, this transform's z will be changed to make it in front of the mask so it can be clicked
+
+		public float m_zOffset : --How much should the z changed
+
+		public bool m_noMask : --If true, the mask won't have a hole
+
+		public bool m_realTime : --Use real time
+
+		public bool m_deactiveWhenHide : --Should deactive the gameObject when hide
+
+		public UITween[] m_tweens : --Tweens used to show or hide the mask
+
+		public UnityEngine.Vector2 m_center : --The center of the hole
+
+		public UnityEngine.Vector2 m_size : --The size of the hole
+
+		public bool m_isOval : --If the hole is oval or rect
+
+		public System.Action<UIMask> m_doHide : --Callback when the mask finishs hiding
+
+
+	Properties:
+		public bool IsShow	(read & write)
+		--Is the mask show or hide
+
+		public UnityEngine.Vector4 ParamVector	(read only)
+		--The parameter vector passed to the material
+
+
+	Constructors:
+
+	Methods:
+		public void reset ()
+		--Recompute the size and position of the hole
+			return : --
+
+		public void restoreZ ()
+		--Restore the z of the unmask transform
+			return : --
+
+		public void resetTween (bool isForward = True)
+		--Reset all tweens
+			bool isForward : --
+			return : --
+
+		public void show (float time = 0)
+		--Show the mask
+			float time : --The time for the hole's size change from 0 to target size
+			return : --
+
+		public void hide (float time = 0)
+		--Hide the mask
+			float time : --The time for the hole's size change from target size to 0
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UIMultiFillImage (base class: UnityEngine.MonoBehaviour)
+	--You can put several UIImage together to make a long image, and this script can create a fill effect of the long image from 0 to 1, the UIImage's texture type must be a fill type
+
+	Members:
+		public UIImage[] m_images : --The array of the UIImage
+
+		public float m_overlap : --The overlap offset between 2 UIImage
+
+		public bool m_useWidth : --If true, mean this image filled in x axis, otherwise in y axis
+
+
+	Properties:
+		public float Fill	(read & write)
+		--The fill value
+
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class UITimer (base class: UnityEngine.MonoBehaviour)
+	--A timer
+
+	Members:
+		public const int F_SECOND = 1 : --Flag for second
+
+		public const int F_MIN = 2 : --Flag for minute
+
+		public const int F_HOUR = 4 : --Flag for hour
+
+		public const int F_DAY = 8 : --Flag for day
+
+		public const int F_WEEK = 16 : --Flag for week
+
+		public int m_format : --The display format, see the flags
+
+		public UITimer.OnTimeUp m_onTimeUp : --Time up callback
+
+		public UITimer.OnTimeChange m_onTimeChange : --Display change callback
+
+		public bool m_isRealTime : --Is real time
+
+		public bool m_isCountDown : --Is count down or count up
+
+		public bool m_displayWhenZero : --If display the zero, like 0 min 10 second should display like 0:10 or 10
+
+		public string m_id : --The id of the timer
+
+		public string[] m_timeUnitTextIds : --The text id for each timer unit, like minute, seconds
+
+		public float m_minSeconds : --The min seconds, if the time less then this, will display a excption text
+
+		public float m_maxSeconds : --The max seconds, if the time lager then this, will display a excption text, won't check the time if max <= min
+
+		public int m_maxUnitLength : --The max number of unit, like you set to diaplay hour and minute and second, but the max number is 2, so if the time is lager then an hour, it will display 1 hour and 10 min, the second will be hided, untuil the time less then 1 hour, it will display 50 min 50 second
+
+		public UIText m_timeText : --The UIText to display the timer
+
+		public UnityEngine.GameObject[] m_objs : --The gameObjects showed or hided with the timer
+
+		public DeleSetter m_delegateTimeUp : --Time up delegate binder
+
+		public DeleSetter m_delegateTimeChange : --Display change delegate binder
+
+		public string m_exceptionString : --The text id for exception text
+
+
+	Properties:
+		public float TimeOffset	(read & write)
+		--This offset will be added to the time
+
+		public bool Visible	(read & write)
+		--Is the timer visible
+
+		public float CurrentTime	(read only)
+		--The current time of the timer
+
+
+	Constructors:
+
+	Methods:
+		public void refreshLang ()
+		--Refresh the localized text
+			return : --
+
+		public void startTimer (System.DateTime date, System.DateTime now)
+		--Start the timer
+			System.DateTime date : --The date this timer will stop
+			System.DateTime now : --The date now
+			return : --
+
+		public void startTimer (System.DateTime date, System.DateTime now, float timeOffset)
+		--Start the timer
+			System.DateTime date : --The date this timer will stop
+			System.DateTime now : --The date now
+			float timeOffset : --The time offset
+			return : --
+
+		public void startTimer (float seconds)
+		--Start the timer
+			float seconds : --The time in second
+			return : --
+
+		public void startTimer (float seconds, float timeOffset)
+		--Start the timer
+			float seconds : --The time in second
+			float timeOffset : --The time offset
+			return : --
+
+		public void stopTimer ()
+		--Stop the timer
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+delegate public virtual void UITimer.OnTimeUp (string id, float passTime)
+--Delegate define for time up callback, the passTime means the extra time in secons when the timer finish
+	string id : --
+	float passTime : --
+	return : --
+delegate public virtual void UITimer.OnTimeChange (string id, float second)
+--Deleaget define for the display changed, second is the current time in sceond
+	string id : --
+	float second : --
+	return : --
+class UIWebView (base class: UnityEngine.MonoBehaviour)
+	--Thie present a web view in your app
+
+	Members:
+		public float m_x : --The screen position of x
+
+		public float m_y : --The screen position of y
+
+		public float m_width : --The width on screen
+
+		public float m_height : --The height on screen
+
+		public string m_url : --The url of this web view to open
+
+		public int m_cameraIndex : --Appoined use which camera's screen
+
+		public DeleSetter m_onLoad : --Delegate binder for loading successed
+
+		public DeleSetter m_onFail : --Delegate binder for loading failed
+
+		public System.Action m_onLoadSuccess : --Callback when load successfully
+
+		public System.Action<string> m_onLoadFail : --Callback when failed to load
+
+
+	Properties:
+		public UIWebView CurrentView	(read only)
+		--The current showed web view
+
+		public bool NeedUpdate	(write only)
+		--Should update the web view's position
+
+		public bool Touchable	(write only)
+		--If the web view can be touched
+
+		public bool Visible	(write only)
+		--If the web view visible
+
+		public float X	(read & write)
+		--The screen position of x
+
+		public float Y	(read & write)
+		--The screen position of y
+
+		public float Width	(read & write)
+		--The width on screen
+
+		public float Height	(read & write)
+		--The screen position of y
+
+
+	Constructors:
+
+	Methods:
+		public void show (bool isEmpty)
+		--Show the web view
+			bool isEmpty : --An empty page or open the url
+			return : --
+
+		public void hide ()
+		--Hide the web view
+			return : --
+
+		public void refresh ()
+		--Reload the web view
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+

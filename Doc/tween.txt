@@ -1,0 +1,2571 @@
+enum RandomRule: --The rules to random value
+	none = 0
+	notSmaller = 1
+	notGreater = 2
+	equal = 3
+	notEqual = 4
+	fix = 5
+
+
+class UIRandomTween (base class: UnityEngine.MonoBehaviour)
+	--Randomly change the values of a tween and play it, disable or enable this will also disaple or enable the tween
+
+	Members:
+		public UITween m_tween : --The tween it controls
+
+		public UnityEngine.Vector2[] m_fromRange : --The range to random between it for from values
+
+		public RandomRule[] m_rules : --The rules for comparing the from value and the to values
+
+		public UnityEngine.Vector2[] m_toRange : --The range to random between it for to values
+
+		public UnityEngine.Vector2 m_timeRange : --The range of the tween's duration
+
+		public UnityEngine.AnimationCurve[] m_curves : --Randomly pick one curve in it and set it to the tween, if there is atleast one curve in this array
+
+		public UnityEngine.Vector2 m_randomTime : --The range of next random time
+
+		public bool m_fromLastTo : --If true, the from value will the last to value, this makes the random tween play smoothly
+
+		public bool m_realTime : --Use real time
+
+		public bool m_recomputWhenFinish : --If true, when the tween finished, it will random again and play it again
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void recompute ()
+		--Random the value
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+enum PlayType: --The play type of a tween
+	ONCE = 0
+	PINGPONG = 1
+	LOOP = 2
+
+
+enum DeactiveSelfType: --The operation when tween finished
+	none = 0
+	forward = 1
+	backward = 2
+	both = 3
+
+
+class abstract UITween (base class: UnityEngine.MonoBehaviour)
+	--The base class of a tween
+
+	Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Constructors:
+
+	Methods:
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+		public abstract void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+delegate public virtual void UITween.OnTweenOver (UITween t)
+--The delegate define for tween over callback
+	UITween t : --
+	return : --
+class UITweenAlpha (base class: UITweenFromTo)
+	--Change the alpha of a UIMesh
+
+	Members:
+		public float m_from : --The from value
+
+		public float m_to : --The to value
+
+		public bool m_changePanelAlpha : --If true, it will change the Alpha of the UIMesh, otherwise, it will change the alpha of the color of the UIMesh
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenColor (base class: UITweenFromTo)
+	--Change the color of a UIMesh
+
+	Members:
+		public UnityEngine.Color m_from : --The from value
+
+		public UnityEngine.Color m_to : --The to value
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenCurve2D (base class: UITween)
+	--Make the gameObject move along a Curve2D
+
+	Members:
+		public Curve2D m_curve2D : --The curve
+
+		public bool m_rotate : --Should rotate the gameObject while moving
+
+		public UnityEngine.Vector3 m_forwardDir : --The forward direction of the gameObject in local space
+
+		public UnityEngine.Vector3 m_defaultRotate : --The rotation when reset
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenCurve2DRect (base class: UITweenCurve2D)
+	--Make the gameObject move along a Curve2D, but the point in the curve will be mapped to a rect
+
+	Members:
+		public UnityEngine.Vector3 m_min : --The left bottom position of the rect in world space
+
+		public UnityEngine.Vector3 m_max : --The right top position of the rect in world space
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public Curve2D m_curve2D : --The curve
+
+		public bool m_rotate : --Should rotate the gameObject while moving
+
+		public UnityEngine.Vector3 m_forwardDir : --The forward direction of the gameObject in local space
+
+		public UnityEngine.Vector3 m_defaultRotate : --The rotation when reset
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenCurve3D (base class: UITween)
+	--Make the gameObject move along a Curve3D
+
+	Members:
+		public Curve3D m_curve3D : --The curve
+
+		public bool m_rotate : --Should rotate the gameObject while moving
+
+		public UnityEngine.Vector3 m_forwardDir : --The forward direction of the gameObject in local space
+
+		public UnityEngine.Vector3 m_defaultRotate : --The rotation when reset
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenCurve3DRect (base class: UITweenCurve3D)
+	--Make the gameObject move along a Curve3D, but the point in the curve will be mapped to a cuboid
+
+	Members:
+		public UnityEngine.Vector3 m_min : --The left bottom front position of the cuboid in world space
+
+		public UnityEngine.Vector3 m_max : --The left bottom back position of the cuboid in world space
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public Curve3D m_curve3D : --The curve
+
+		public bool m_rotate : --Should rotate the gameObject while moving
+
+		public UnityEngine.Vector3 m_forwardDir : --The forward direction of the gameObject in local space
+
+		public UnityEngine.Vector3 m_defaultRotate : --The rotation when reset
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenFill (base class: UITweenFromTo)
+	--Change the fillValue of a UIImage or a UIMultiFillImage
+
+	Members:
+		public float m_from : --The from value
+
+		public float m_to : --The to value
+
+		public bool m_inverseFill : --If inverse fill
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenFrame (base class: UITween)
+	--A frame animation of a sprite
+
+	Members:
+		public UISprite m_sprite : --The sprite to display
+
+		public string[] m_frames : --The names of the frames to display, the display index is the the Factor casted to int
+
+		public bool m_isSnap : --Snap the sprite every time change frame
+
+		public UnityEngine.Vector2 m_spriteMaxSize : --The max size of the sprite
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+enum ResetType: --How to set the from and to value when reset
+	custom = 0
+	fromCurrent = 1
+	toCurrent = 2
+
+
+class abstract UITweenFromTo (base class: UITween)
+	--A base class for tweens has a from and to value
+
+	Members:
+		public ResetType m_resetType : --The reset operation
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+		public abstract void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+
+
+class UITweenMaterial (base class: UITweenFromTo)
+	--Tween values in a material, if the name of the value is not empty
+
+	Members:
+		public UnityEngine.Renderer m_render : --The render of the material, if this is not null, will use this render's material
+
+		public UnityEngine.Material m_material : --The material, if render is null, will use this material
+
+		public UnityEngine.Vector4 m_fromVec : --The from value for a vector
+
+		public UnityEngine.Vector4 m_toVec : --The to value for a vector
+
+		public string m_vectorName : --The name of the vector
+
+		public UnityEngine.Color m_fromColor : --The from value of a color
+
+		public UnityEngine.Color m_toColor : --The to value of a color
+
+		public string m_colorName : --The name of the color
+
+		public float m_from : --The from value of a float
+
+		public float m_to : --The to value of a float
+
+		public string m_floatName : --The name of the float
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+
+
+class UITweenPanelAlpha (base class: UITween)
+	--Tween the alpha of all UIMesh under this gameObject, this change the Alpha of the UIMesh, not the color
+
+	Members:
+		public float m_from : --The from value
+
+		public float m_to : --The to value
+
+		public bool m_changeFilter : --If true, this will also tween the MeshFilter and SkinnedMeshRenderer
+
+		public bool m_needResetWhenPlay : --If true, when reset, will search the component it should control again
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+
+
+enum TweenPlayMode: --The mode of a tween
+	sameTime = 0
+	oneByOne = 1
+
+
+class UITweenPlayer (base class: UnityEngine.MonoBehaviour)
+	--The controls a list of tween, and play them by its mode
+
+	Members:
+		public System.Collections.Generic.List<UITween> m_tweens : --The list of the tween
+
+		public TweenPlayMode m_playMode : --The mode
+
+		public float m_delay : --Delay time in seconds
+
+		public bool m_isRealTime : --Use real time
+
+		public bool m_playWhenEnable : --If true, the player will play every time it's enabled
+
+		public bool m_isLoop : --Should play the list cyclically
+
+		public DeleSetter m_stopDele : --The delegate binder for the callback
+
+		public UITweenPlayer.OnPlayerStop m_callback : --The stop callback
+
+
+	Properties:
+		public bool IsPlaying	(read only)
+		--If the player playing
+
+
+	Constructors:
+
+	Methods:
+		public void stop ()
+		--Stop the player
+			return : --
+
+		public void play ()
+		--Play the player
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+delegate public virtual void UITweenPlayer.OnPlayerStop (UITweenPlayer player, bool isFinish)
+--The delegate define for the player stopped, isFinish means if the player has finished play
+	UITweenPlayer player : --
+	bool isFinish : --
+	return : --
+class UITweenPos (base class: UITweenFromTo)
+	--Tween the position of the transform
+
+	Members:
+		public UnityEngine.Vector3 m_from : --The from value
+
+		public UnityEngine.Vector3 m_to : --The to value
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenPosInScreen (base class: UITween)
+	--Tween the position in a UIScreen
+
+	Members:
+		public UnityEngine.Vector2 m_from : --The from value in percent
+
+		public UnityEngine.Vector2 m_to : --The to value in percent
+
+		public UnityEngine.Vector2 m_fromOffset : --The offset of the from value
+
+		public UnityEngine.Vector2 m_toOffset : --The offset of the to value
+
+		public UIScreen m_screen : --The UIScreen
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+
+
+class UITweenQuaternion (base class: UITween)
+	--Tween the rotation by given an axis and an angle
+
+	Members:
+		public UnityEngine.Vector3 m_axis : --The axis
+
+		public float m_from : --The from value of the angle
+
+		public float m_to : --The to value of the angle
+
+		public UITweenRotateType m_rotateType : --Rotate type
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+enum UITweenRotateType: --The rotate type
+	minor = 0
+	lerp = 1
+	major = 2
+
+
+class UITweenRotate (base class: UITweenFromTo)
+	--Tween the rotation of a transform
+
+	Members:
+		public UnityEngine.Vector3 m_from : --The from value
+
+		public UnityEngine.Vector3 m_to : --The to value
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenScale (base class: UITweenFromTo)
+	--Tween the scale of a transform
+
+	Members:
+		public UnityEngine.Vector3 m_from : --The from value
+
+		public UnityEngine.Vector3 m_to : --The to value
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenTransform (base class: UITweenFromTo)
+	--Tween a transform
+
+	Members:
+		public UnityEngine.Vector3 m_posFrom : --The from of the position
+
+		public UnityEngine.Vector3 m_posTo : --The to of the position
+
+		public UnityEngine.Vector3 m_scaleFrom : --The from of the scale
+
+		public UnityEngine.Vector3 m_scaleTo : --The to of the scale
+
+		public UnityEngine.Vector3 m_rotateFrom : --The from of the rotation
+
+		public UnityEngine.Vector3 m_rotateTo : --The to of the rotation
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+		public ResetType m_resetType : --The reset operation
+
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		protected virtual void resetFrom ()
+		--Should override this, if the reset type is from current, this method is called to set the from value by the current value
+			return : --
+
+		protected virtual void resetTo ()
+		--Should override this, if the reset type is to current, this method is called to set the to value by the current value
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+
+
+class UITweenTranslate (base class: UITween)
+	--Tween a position offset of a transform
+
+	Members:
+		public UnityEngine.Vector3 m_offset : --The offset
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void resetStartPos ()
+		--Remark the start position is the current position, the start position is set when awake
+			return : --
+
+
+	Inherit Members:
+		public string m_playID : --The id of a tween
+
+		public float m_duration : --Duration of the tween
+
+		public float m_backwardDelay : --Delay when play backward
+
+		public float m_forwardDelay : --Delay when play forward
+
+		public float m_timeScale : --Addtional Time sacle for the tween
+
+		public bool m_isRealTime : --If use real time
+
+		public bool m_ignoreZ : --If ignore z when change the transforms, not all tweens need this
+
+		public PlayType m_playType : --The play type
+
+		public UnityEngine.AnimationCurve m_curve : --The curve to get the factor of time
+
+		public bool m_isForward : --Is play forward
+
+		public bool m_replayWhenEnable : --If true, this tween will played every time this gameObject enabled
+
+		public bool m_randomStart : --If true, this tween will play from a random time between 0 and duration, but the delay time is still work
+
+		public bool m_isKey : --A flag you may use it on the finish callback to determine something
+
+		public DeactiveSelfType m_deactiveSelfWhenFinish : --The operation when finished
+
+		public DeleSetter m_delegateTweenOver : --Delegate binder for tween over
+
+		public UITween.OnTweenOver m_tweenOver : --The callback of tween over
+
+
+	Inherbit Properties:
+		public bool IsPlaying	(read & write)
+		--Is the tween playing
+
+		public float Factor	(read only)
+		--The factor of time
+
+		public bool HasInit	(read & write)
+		--If the tween has initialized
+
+
+	Inherbit Methods:
+		public virtual void onEditorPlay ()
+		--This will called when this tween played while the editor is not playing
+			return : --
+
+		protected virtual void preResetValue ()
+		--Should override, this is called when about to reset the tween
+			return : --
+
+		public virtual void updateSelf ()
+		--Should override, this is called every frame when tween is playing, this method is the method which change the state of a gameObject
+			return : --
+
+		public virtual void setRandomValue (UIRandomTween randomTween)
+		--Should be override, when you use UIRandomTween, this is the method to set the value from UIRandomTween
+			UIRandomTween randomTween : --The UIRandomTween contains the random values
+			return : --
+
+		public void stop ()
+		--Stop the tween, but the current time of the tween doesn't change
+			return : --
+
+		public void reset ()
+		--Reset the current time to an end
+			return : --
+
+		public virtual void reset (bool isForward)
+		--Reset the current time to an end
+			bool isForward : --Reset to beginning or ending
+			return : --
+
+		protected virtual void postResetValue ()
+		--Should override, this is called when finish reset the tween
+			return : --
+
+		public void resetAndPlay (bool isForward)
+		--Reset the tween and play it
+			bool isForward : --Play forward or backward
+			return : --
+
+		public void resetAndPlay ()
+		--Reset the tween and play it
+			return : --
+
+		public void play ()
+		--Play the tween
+			return : --
+
+		public void sampleTime (float time)
+		--Change the current time to a time
+			float time : --The new current time
+			return : --
+
+		public void play (bool isForward)
+		--Play the tween
+			bool isForward : --Play forward or backward
+			return : --
+
+
+

@@ -1,0 +1,421 @@
+class MeshEditor (base class: UnityEngine.MonoBehaviour)
+	--This is used to create 3d mesh in editor
+
+	Members:
+		public bool m_hasNormals : --Should export normals
+
+		public bool m_hasColors : --Should export colors
+
+		public UnityEngine.Color m_defaultColor : --The default color of vertexes
+
+		public string m_meshSavePath : --The path where the mesh should be exported to
+
+		public UnityEngine.SkinnedMeshRenderer m_render : --If not null, the mesh will be set to this render
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public UnityEngine.Mesh createMesh ()
+		--Create the mesh
+			return : --The mesh created
+
+		public void saveMesh (UnityEngine.Mesh m)
+		--Save or replace the mesh to disk
+			UnityEngine.Mesh m : --The mesh to be saved
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class MeshEditorMeta (base class: UnityEngine.MonoBehaviour)
+	--This present a convex polyhedron, will be included by a mesh editor
+
+	Members:
+		public bool m_visible : --If draw gizmos to show the polyhedron in editor
+
+		public float m_displayR : --The radius of the sphere to show the center
+
+		public UnityEngine.Vector3 m_center : --A point in the polyhedron, it doesn't have to be the center, but have to be inside the polyhedron
+
+		public TextureSkinBone m_bone : --If this meta is pure imported, this bone is used for all its vertexs
+
+		public bool m_pureImportMesh : --Pure imported means this meta don't have MeshEditorNode, but it import another mesh
+
+		public MeshEditorNode[] m_extraNodes : --A meta will include all MeshEditorNode is or belong to its children, and if you want to include other nodes not under it, you should set them in this array
+
+		public UnityEngine.MeshFilter m_importFilter : --Pure imported meta will import mesh from this filter
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void importMesh ()
+		--Import all vertexes from the given mesh
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+struct EdgePair
+	--The 2 edges from one vertex, made a triangle
+
+	Members:
+		public MeshEditorNode m_edge1 : --The first edge
+
+		public MeshEditorNode m_edge2 : --The second edge
+
+
+	Properties:
+
+	Methods:
+
+
+class MeshEditorNode (base class: UnityEngine.MonoBehaviour)
+	--Present a vertex, used by a MeshEditorMeta
+
+	Members:
+		public bool m_visible : --If draw gizmos for the node
+
+		public float m_displayR : --The radius of the sphere to display the node
+
+		public float m_drawNormalLen : --The length of the vertor to display normal
+
+		public bool m_showEdges : --If draw a line for each edge
+
+		public System.Collections.Generic.List<EdgePair> m_edges : --The edges connected to this node, an edge connect 2 nodes, but you only need to set it in one node, but it won't go wrong if you set both
+
+		public MeshEditorUVNode m_uvNode : --The node to compute the uv of this vertex
+
+		public UnityEngine.Transform[] m_bones : --The bones affect this vertex
+
+		public System.Collections.Generic.List<float> m_weights : --The weights of each bones, this will be recompute when creating mesh, the count maybe change, and the weights will be adjust to between 0 and 1 by diving the sum of the whole list
+
+		public UnityEngine.Color m_color : --The custom color of this vertex
+
+		public bool m_customColor : --If use custom color
+
+		public UnityEngine.Vector2 m_uv : --The uv of this vertex
+
+		public bool m_customUV : --If use custom uv, if not, the uv will be computed
+
+		public UnityEngine.Vector3 m_normal : --The normal of this vertex
+
+		public bool m_customNormal : --If use custom normal, if not, the normal will be computed
+
+		public bool m_syncPosWithMesh : --If true, the mesh will be recreated when you move the node, so you can see the change
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class MeshEditorUVNode (base class: UnityEngine.MonoBehaviour)
+	--Present the uv of a vertex, used by MeshEditorNodem
+
+	Members:
+		public UIImage m_uvImage : --The texture for the mesh, the uv is determined by the node's position related to this image
+
+		public float m_zoom : --The zoom of the preview
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class TextureSkin (base class: UnityEngine.MonoBehaviour)
+	--It's used to create 2d mesh
+
+	Members:
+		public UnityEngine.SkinnedMeshRenderer m_render : --The render which created mesh will be set to
+
+		public UIImage m_uvImage : --This image will be used to compute uv
+
+		public UnityEngine.Color m_color : --The default color of vertexes
+
+		public string m_path : --The path to save the mesh on disk
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void saveMesh ()
+		--Save the mesh
+			return : --
+
+		public void createMesh ()
+		--Create mesh
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class TextureSkinBone (base class: UnityEngine.MonoBehaviour)
+	--Present a bone used by 2d mesh and 3d mesh
+
+	Members:
+		public UnityEngine.Vector3 m_end : --The end point of this bone
+
+		public float m_r : --The radius of the sphere to display the start point of the bone
+
+		public bool m_attachToEnd : --If true, this bone will attach to the end point of its parent bone
+
+		public bool m_visible : --If draw gizmos for this bone
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class TextureSkinNode (base class: UnityEngine.MonoBehaviour)
+	--Present a vertex for 2d mesh
+
+	Members:
+		public UnityEngine.Transform[] m_bones : --The bones affect this vertex
+
+		public float[] m_weights : --The weights of each bones, this will be recompute when creating mesh, the count maybe change, and the weights will be adjust to between 0 and 1 by diving the sum of the whole list
+
+		public float m_r : --The radius of the sphere to display the node
+
+		public bool m_visible : --If draw gizmos for this node
+
+		public bool m_specialUV : --If use custom uv
+
+		public UnityEngine.Vector2 m_uv : --The uv of this node, if not custom, this will be compute when creating
+
+		public UIImage m_uvImage : --The UIImage used to compute uv, if null, it will use the UIImage seted in TextureSkin
+
+		public UnityEngine.Color m_color : --The custom color of this node
+
+		public bool m_specialColor : --If use custom color
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class TextureSkinPlane (base class: UnityEngine.MonoBehaviour)
+	--Present a convex polygon in 2d plane
+
+	Members:
+		public int m_order : --The render order of this polygon, the bigger order will be rendered later
+
+		public bool m_visible : --If draw gizmos for this polygon
+
+		public TextureSkinNode[] m_commonNode : --A plane will include all TextureSkinNode is or belong to its children, and if you want to include other nodes not under it, you should set them in this array
+
+		public bool m_importFromMesh : --If true, this plane will be imported plane, it will import the mesh in a MeshFilter attached to it
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class JsonViewer (base class: UnityEngine.MonoBehaviour)
+	--This is used to show and edit a json file in inspector
+
+	Members:
+		public UnityEngine.TextAsset m_text : --The json file
+
+		public bool m_isFormatNumber : --Is the json file formated number
+
+		public bool m_hideButton : --Hide the edit buttons
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class CameraPhoto (base class: UnityEngine.MonoBehaviour)
+	--Save a camera render texture to a texture2D, need to attached to a camera
+
+	Members:
+		public string m_path : --The path to save the texture2D
+
+		public bool m_newRenderTexture : --If true, will create a new RenderTexture for the camera
+
+		public int m_width : --The width of the created RenderTexture
+
+		public int m_height : --The height of the created RenderTexture
+
+		public int m_leftPad : --The left offset to clip image from the RenderTexture
+
+		public int m_rightPad : --The right offset to clip image from the RenderTexture
+
+		public int m_topPad : --The Top offset to clip image from the RenderTexture
+
+		public int m_bottomPad : --The bottom offset to clip image from the RenderTexture
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+		public void takePhoto ()
+		--Call this at runtime, save the current frame to a texture2D
+			return : --
+
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class DataProcessorData (base class: System.Object)
+	--Present a excel file to be processed as a data asset
+
+	Members:
+		public string m_file : --The path of the file
+
+		public string m_target : --The path of the asset exported
+
+		public string m_jsonTarget : --The path of the json file exported
+
+		public bool m_isKeyValue : --Is this excel file's format is key value
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class SVGProcessorData (base class: System.Object)
+	--Present a svg file to be processed as a ui layout
+
+	Members:
+		public string m_file : --The path of the svg file
+
+		public string m_jsonFile : --The path of the json file exported
+
+		public string m_layer : --The layer should be exported in the svg file
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
+class LGUIConfig (base class: UnityEngine.ScriptableObject)
+	--This is a config for processing data, the asset of this class will be created automatically in "Editor" folder
+
+	Members:
+		public string m_excelPrefix : --A field name in a dataable class mapping the first cell of a column in excel. But people usually add like "m_" to a member field, so set this prefix and you don't need add the prefix in excel
+
+		public DataProcessorData[] m_datas : --The excel files will be processed
+
+		public SVGProcessorData[] m_uiBuilderSvgs : --The svg files will be processed
+
+		public string m_langExcelFile : --The excel file for multi language, this excel file use the first cell of each column as the language asset's name, it's like, first column, is text id, and second column, first cell is "en", and put the English text here, and third column, first cell is "zh", and put the Chinese text here
+
+		public string m_langAssetPath : --All the language assets will be created in this folder
+
+		public string m_languageClassPath : --This is to create a language class, which will have all the fields named by the text id
+
+
+	Properties:
+
+	Constructors:
+
+	Methods:
+
+	Inherit Members:
+
+	Inherbit Properties:
+
+	Inherbit Methods:
+
+
